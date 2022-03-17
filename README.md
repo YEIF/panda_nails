@@ -1,4 +1,4 @@
-# vue_week7
+# panda_nails
 
 ## Project setup
 ```

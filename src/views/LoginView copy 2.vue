@@ -1,6 +1,6 @@
 <template>
   <VLoading :active="isLoading" :z-index="1060"></VLoading>
-  <div class="container mt-5 mb-5">
+  <div class="container mt-5">
     <div class="row">
       <img
         class="col-6 d-none d-md-block login-img"
@@ -11,59 +11,40 @@
         <!-- 登入元件 -->
         <div class="w-100 my-auto">
           <div class="fs-1">LOG IN</div>
-          <VForm
-            ref="form"
-            id="form"
-            class="form-signin"
-            v-slot="{ errors }"
-            @submit="login"
-          >
+          <form id="form" class="form-signin">
             <div class="form-floating mb-3">
-              <VField
-                id="email"
-                name="email"
+              <input
+                v-model="user.username"
                 type="email"
                 class="form-control"
-                :class="{ 'is-invalid': errors['email'] }"
-                rules="required|email"
-                v-model="form.user.email"
+                id="username"
                 placeholder="name@example.com"
                 required
                 autofocus
                 autocomplete="off"
-              >
-              </VField>
-              <label for="email">Email address</label>
-              <ErrorMessage
-                name="email"
-                class="invalid-feedback"
-              ></ErrorMessage>
+              />
+              <label for="username">Email address</label>
             </div>
             <div class="form-floating">
-              <VField
-                id="password"
-                name="password"
+              <input
+                v-model="user.password"
                 type="password"
                 class="form-control"
-                :class="{ 'is-invalid': errors['password'] }"
-                rules="required"
-                v-model="form.user.password"
+                id="password"
                 placeholder="Password"
                 required
-                autofocus
                 autocomplete
-              >
-              </VField>
+              />
               <label for="password">Password</label>
-              <ErrorMessage
-                name="password"
-                class="invalid-feedback"
-              ></ErrorMessage>
             </div>
-            <button class="btn btn-lg btn-primary w-100 mt-3" type="submit" >
+            <button
+              class="btn btn-lg btn-primary w-100 mt-3"
+              type="button"
+              @click="login()"
+            >
               登入
             </button>
-          </VForm>
+          </form>
         </div>
       </div>
     </div>
@@ -87,11 +68,9 @@ import emitter from '@/libs/emitter'
 export default {
   data () {
     return {
-      form: {
-        user: {
-          email: '',
-          password: ''
-        }
+      user: {
+        username: '',
+        password: ''
       },
       isLoading: false
     }
@@ -100,13 +79,8 @@ export default {
     login () {
       const url = `${process.env.VUE_APP_API}/admin/signin`
       this.isLoading = true
-      console.log(this.form.user.email, this.form.user.password)
-      const data = {
-        username: this.form.user.email,
-        password: this.form.user.password
-      }
       this.$http
-        .post(url, data)
+        .post(url, this.user)
         .then((response) => {
           const { token, expired } = response.data
           // 寫入 cookie token
@@ -118,7 +92,6 @@ export default {
           this.$router.push('/admin/products')
         })
         .catch((err) => {
-          console.dir(err)
           emitter.emit('push-message', {
             style: 'danger',
             title: `${err.response.data.message}`

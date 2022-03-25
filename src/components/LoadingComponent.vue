@@ -11,7 +11,7 @@
       <div><div></div></div>
     </div>
   </div> -->
-      <img alt="loading.gif" src="@/assets/PandaLoading.gif">
+      <img alt="loading.gif" src="@/assets/img/panda_loading_2.gif">
 </template>
 <style lang="scss">
 @import '@/assets/css/loading.css';

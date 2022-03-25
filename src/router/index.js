@@ -21,6 +21,11 @@ const routes = [
       {
         path: 'cart',
         component: () => import('../views/front/CartView.vue')
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/LoginView.vue')
       }
     ]
   },
@@ -40,25 +45,22 @@ const routes = [
       {
         path: 'coupon',
         component: () => import('../views/admin/AdminCoupon.vue')
-      }, {
+      },
+      {
         path: 'orders',
         component: () => import('../views/admin/OrderView.vue')
       }
     ]
-  }, {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/LoginView.vue')
   },
   // 404
   {
     path: '/:pathMatch(.*)*',
     component: () => import('../views/NotFound.vue')
-  },
-  {
-    path: '/admin/:pathMatch(.*)*',
-    redirect: { name: 'Login' }
   }
+  // {
+  //   path: '/admin/:pathMatch(.*)*',
+  //   redirect: { name: 'Login' }
+  // }
 
   // 重新導向
   // {

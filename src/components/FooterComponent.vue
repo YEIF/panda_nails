@@ -17,7 +17,7 @@
       </li>
       <li class="my-1 text-center">
         <a
-          href="https://www.facebook.com/SugarCafeBar25588306"
+          href="https://www.instagram.com/panda__57.nail/"
           target="_blank"
           class="text-white mx-3"
         >

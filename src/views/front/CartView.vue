@@ -52,8 +52,8 @@
                   min="1"
                   type="number"
                   class="form-control"
-                  @blur="updateCart(cart)"
                 />
+                <!-- @blur="updateCart(cart)" -->
                 <span class="input-group-text" id="basic-addon2">{{
                   cart.product.unit
                 }}</span>
@@ -192,11 +192,15 @@ export default {
     'carts.carts': {
       handler (n, o) {
         Object.keys(n).forEach((index) => {
+          const AfterQty = o || 'no'
+          console.log(AfterQty)
           if (n[index].qty <= 0) {
             n[index].qty = '0'
+            console.log(n[index].qty)
+            // n[index].qty = o[index].qty
           }
         })
-        console.log(n, o)
+        // console.log(n, o)
       },
       deep: true
     },
@@ -275,6 +279,10 @@ export default {
         .catch((err) => {
           console.dir(err)
           this.isLoadingItem = ''
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     sendOrder () {

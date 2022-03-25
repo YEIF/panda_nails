@@ -14,7 +14,7 @@
       <img alt="loading.gif" src="@/assets/img/panda_loading_2.gif">
 </template>
 <style lang="scss">
-@import '@/assets/css/loading.css';
+@import '@/assets/stylesheets/css/loading.css';
 
 </style>
 <script>

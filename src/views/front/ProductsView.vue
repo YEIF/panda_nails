@@ -3,80 +3,95 @@
   <VLoading :active="isLoading" :z-index="1060">
     <LoadingComponent></LoadingComponent>
   </VLoading>
+  <div
+    class="position-relative d-flex align-items-center justify-content-center"
+    style="min-height: 350px"
+  >
+    <div
+      class="position-absolute"
+      style="
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-position: center center;
+        opacity: 0.3;
+      "
+      :style="{ backgroundImage: `url(${BannerImage})` }"
+    ></div>
+    <h2 class="fw-bold">產品頁面</h2>
+  </div>
   <div class="container">
-    <div class="mt-4">
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th>圖片</th>
-            <th>商品名稱</th>
-            <th>價格</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="product in products" :key="product.id">
-            <td style="width: 200px">
-              <div
-                style="
-                  height: 100px;
-                  background-size: cover;
-                  background-position: center;
-                "
-                :style="{ backgroundImage: `url(${product.imageUrl})` }"
-              ></div>
-            </td>
-            <td>
+    <ul class="row list-unstyled row-cols-1 row-cols-md-3 row-cols-lg-4 mt-4">
+      <li class="col" v-for="product in products" :key="product.id">
+        <div class="card mb-4">
+          <!-- <img :src="product.imageUrl" class="card-img-top card-img-scale" alt="..." /> -->
+          <div class="overflow-hidden">
+            <div
+              class="card-img-top card-img-scale"
+              style="
+                height: 250px;
+                background-size: cover;
+                background-position: center;
+              "
+              :style="{ backgroundImage: `url(${product.imageUrl})` }"
+            ></div>
+          </div>
+
+          <div class="card-body text-start">
+            <h5 class="card-title fs-4 fw-bold">
               {{ product.title }}
-            </td>
-            <td>
-              <div class="h5" v-if="!product.price">
-                {{ product.origin_price }} 元
-              </div>
-              <del class="h6" v-if="product.price"
-                >原價 {{ product.origin_price }} 元</del
+              <span
+                class="position-absolute start-90 translate-middle badge rounded-pill bg-success fs-7"
               >
-              <div class="h5" v-if="product.price">
-                現在只要 {{ product.price }} 元
-              </div>
-            </td>
-            <td>
-              <div class="btn-group btn-group-sm">
-                <router-link
-                  :to="`/product/${product.id}`"
-                  class="btn btn-primary"
+                {{ product.category }}
+              </span>
+            </h5>
+            <div class="card-text d-flex justify-content-between">
+              <p class="fw-bold card-text text-danger fs-5 my-1">
+                NT ${{ product.price }} 元
+                <del class="m-start fs-6 small text-muted">
+                  {{ product.origin_price }} 元</del
                 >
-                  <!-- <i class="fas fa-spinner fa-pulse" ></i> -->
-                  查看更多
-                </router-link>
-                <button
-                  type="button"
-                  class="btn btn-outline-danger"
-                  @click="addToCart(product.id, product.title)"
-                  :disabled="isLoadingItem === product.id"
-                >
-                  <i
-                    class="fas fa-spinner fa-pulse"
-                    v-if="isLoadingItem === product.id"
-                  ></i>
-                  加到購物車
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination-Component
-        :pages="pagination"
-        @change-pages="getProducts"
-      ></pagination-Component>
-    </div>
+              </p>
+              <!-- <router-link
+                :to="`/product/${product.id}`"
+                class="card-link text-decoration-none"
+              >
+                <i class="bi bi-zoom-in fs-3"></i>
+              </router-link> -->
+              <a
+                href="#"
+                @click.prevent="addToCart(product.id, product.title)"
+                :disabled="isLoadingItem === product.id"
+                class="card-link text-decoration-none"
+              >
+                <i
+                  class="fas fa-spinner fa-pulse"
+                  v-if="isLoadingItem === product.id"
+                ></i
+                ><i class="bi bi-cart-plus fs-3"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
-
+<style lang="scss" scoped>
+.card-img-scale:hover {
+  transform: scale(1.2);
+}
+.card-img-scale {
+  transform: scale(1);
+  transition: all 0.5s ease-out;
+}
+</style>
 <script>
+import BannerImage from '@/assets/img/banner3.jpg'
 import emitter from '@/libs/emitter'
-import PaginationComponent from '@/components/PaginationComponent.vue'
+// import PaginationComponent from '@/components/PaginationComponent.vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
 export default {
   data () {
@@ -88,11 +103,12 @@ export default {
         loadingItem: ''
       },
       // VLoading
-      isLoading: false
+      isLoading: false,
+      BannerImage: BannerImage
     }
   },
   components: {
-    PaginationComponent,
+    // PaginationComponent,
     LoadingComponent
   },
   methods: {

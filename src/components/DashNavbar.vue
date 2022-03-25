@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
       <!-- <a class="navbar-brand" href="#">後台</a> -->
       <router-link class="navbar-brand" to="/admin">後台</router-link>
@@ -37,7 +37,11 @@
     </div>
   </nav>
 </template>
-
+<style lang="scss">
+body{
+  padding-top: 56px;
+}
+</style>
 <script>
 export default {
   methods: {

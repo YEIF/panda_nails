@@ -62,11 +62,13 @@
 .nav-logo {
   width: 255px;
   height: 60px;
-  /* -webkit-mask-image: url(@/assets/img/panda_header.png) no-repeat center center; */
   mask-image: url(@/assets/img/panda_850X200.png);
   background-color: black;
   background-size:contain;
   mask-size:contain;
+}
+body{
+  padding-top: 86px;
 }
 </style>
 <script>

@@ -1,9 +1,27 @@
 <template>
   <VLoading :active="isLoading" :z-index="1060"></VLoading>
+    <div
+    class="position-relative d-flex align-items-center justify-content-center"
+    style="min-height: 350px"
+  >
+    <div
+      class="position-absolute"
+      style="
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-position: center center;
+        opacity: 0.3;
+      "
+      :style="{ backgroundImage: `url(${BannerImage})` }"
+    ></div>
+    <h2 class="fw-bold">管理員登入</h2>
+  </div>
   <div class="container mt-5 mb-5">
     <div class="row">
       <img
-        class="col-6 d-none d-md-block login-img"
+        class="col-6 d-none d-md-block login-img px-0 shadow-lg rounded"
         src="@/assets/img/login_1.jpg"
         alt="login-img"
       />
@@ -83,7 +101,7 @@
 </style>
 <script>
 import emitter from '@/libs/emitter'
-
+import BannerImage from '@/assets/img/banner3.jpg'
 export default {
   data () {
     return {
@@ -93,7 +111,8 @@ export default {
           password: ''
         }
       },
-      isLoading: false
+      isLoading: false,
+      BannerImage: BannerImage
     }
   },
   methods: {

@@ -13,11 +13,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.scb-footer {
-  letter-spacing: 0.25rem;
-  @media (max-width: 992px) {
-    letter-spacing: 0;
-  }
-}
-</style>

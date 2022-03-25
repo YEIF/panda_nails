@@ -26,9 +26,6 @@
     }
   }
 }
-body{
-  padding-top: 86px;
-}
 </style>
 <script>
 import ToastMessageComponent from '@/components/ToastMessageComponent.vue'

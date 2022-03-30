@@ -1,76 +1,132 @@
 <template>
   <!-- <h2>單一產品</h2> -->
   <VLoading :active="isLoading" :z-index="1060">
-
+    <LoadingComponent></LoadingComponent>
   </VLoading>
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-2">
+      <div class="col">
 
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb mt-3">
-      <li class="breadcrumb-item">
-        <router-link to="/products">產品頁面</router-link>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">
-        {{ product.title }}
-      </li>
-    </ol>
-  </nav>
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content border-0">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="exampleModalLabel">
-          <span>{{ product.title }}</span>
-        </h5>
-        <!-- <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button> -->
+        <span><img class="img-fluid object-fit-contain" :src="product.imagesUrl" alt="" /></span>
+        <div
+          :style="{ backgroundImage: `url(${product.imagesUrl})` }"
+          style="height: 300px"
+        ></div>
       </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-6">
-            <img class="img-fluid" :src="product.imagesUrl" alt="" />
-          </div>
-          <div class="col-sm-6">
-            <span class="badge bg-primary rounded-pill">{{
-              product.category
-            }}</span>
-            <p>商品描述：{{ product.description }}</p>
-            <p>商品內容：{{ product.content }}</p>
-            <div class="h5" v-if="!product.price">
-              {{ product.origin_price }} 元
-            </div>
-            <del class="h6" v-if="product.price"
-              >原價 {{ product.origin_price }} 元</del
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mt-3">
+            <li class="breadcrumb-item">
+              <router-link to="/products">產品頁面</router-link>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ product.title }}
+            </li>
+          </ol>
+        </nav>
+        <div class="">
+          <div class="text-start fs-2">
+            {{ product.title }}
+            <small class="badge rounded-pill bg-success">
+              {{ product.category }}</small
             >
-            <div class="h5" v-if="product.price">
-              現在只要 {{ product.price }} 元
-            </div>
-            <div>
-              <div class="input-group">
-                <input
-                  type="number"
-                  class="form-control"
-                  v-model.number="qty"
-                  min="1"
-                />
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click="addToCart(product.id, product.title, qty)"
-                >
-                  加入購物車
-                </button>
+          </div>
+          <div class="product-description text-secondary text-start fs-5 mt-3">
+            {{ product.description }}
+          </div>
+          <div class="product-content text-secondary text-start fs-5 mt-3">
+            {{ product.content }}
+          </div>
+          <div class="fw-bold text-md-start text-danger fs-3 mt-4">
+            NT ${{ product.price }} 元
+            <del class="text-md-start fs-6 small text-muted">
+              {{ product.origin_price }} 元</del
+            >
+          </div>
+          <div class="input-group mt-4">
+            <input
+              type="number"
+              class="form-control"
+              v-model.number="qty"
+              min="1"
+            />
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="addToCart(product.id, product.title, qty)"
+            >
+              加入購物車
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content border-0">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <span>{{ product.title }}</span>
+            </h5>
+            <!-- <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button> -->
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <img class="img-fluid" :src="product.imagesUrl" alt="" />
               </div>
+              <div class="col-sm-6">
+                <span class="badge bg-primary rounded-pill">{{
+                  product.category
+                }}</span>
+                <p>商品描述：{{ product.description }}</p>
+                <p>商品內容：{{ product.content }}</p>
+                <div class="h5" v-if="!product.price">
+                  {{ product.origin_price }} 元
+                </div>
+                <del class="h6" v-if="product.price"
+                  >原價 {{ product.origin_price }} 元</del
+                >
+                <div class="h5" v-if="product.price">
+                  現在只要 {{ product.price }} 元
+                </div>
+                <div>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      v-model.number="qty"
+                      min="1"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="addToCart(product.id, product.title, qty)"
+                    >
+                      加入購物車
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- col-sm-6 end -->
             </div>
           </div>
-          <!-- col-sm-6 end -->
         </div>
       </div>
     </div>
   </div>
 </template>
-
+<style lang="scss">
+.product-description,
+.product-content {
+  line-height: 2;
+}
+</style>
 <script>
+import LoadingComponent from '@/components/LoadingComponent.vue'
 import emitter from '@/libs/emitter'
 export default {
+  components: { LoadingComponent },
   data () {
     return {
       product: {},

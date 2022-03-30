@@ -27,15 +27,17 @@
         <div class="card mb-4">
           <!-- <img :src="product.imageUrl" class="card-img-top card-img-scale" alt="..." /> -->
           <div class="overflow-hidden">
-            <div
-              class="card-img-top card-img-scale"
-              style="
-                height: 250px;
-                background-size: cover;
-                background-position: center;
-              "
-              :style="{ backgroundImage: `url(${product.imageUrl})` }"
-            ></div>
+            <router-link :to="`/product/${product.id}`" class="">
+              <div
+                class="card-img-top card-img-scale"
+                style="
+                  height: 250px;
+                  background-size: cover;
+                  background-position: center;
+                "
+                :style="{ backgroundImage: `url(${product.imageUrl})` }"
+              ></div>
+            </router-link>
           </div>
 
           <div class="card-body text-start">
@@ -54,14 +56,7 @@
                   {{ product.origin_price }} 元</del
                 >
               </p>
-              <!-- <router-link
-                :to="`/product/${product.id}`"
-                class="card-link text-decoration-none"
-              >
-                <i class="bi bi-zoom-in fs-3"></i>
-              </router-link> -->
-              <a
-                href="#"
+              <button
                 @click.prevent="addToCart(product.id, product.title)"
                 :disabled="isLoadingItem === product.id"
                 class="card-link text-decoration-none"
@@ -70,13 +65,19 @@
                   class="fas fa-spinner fa-pulse"
                   v-if="isLoadingItem === product.id"
                 ></i
-                ><i class="bi bi-cart-plus fs-3"></i
-              ></a>
+                ><i class="bi bi-cart-plus fs-3"></i>
+              </button>
             </div>
           </div>
         </div>
       </li>
     </ul>
+    <div class="text-center">
+      <pagination-Component
+        :pages="pagination"
+        @change-pages="getProducts"
+      ></pagination-Component>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -91,7 +92,7 @@
 <script>
 import BannerImage from '@/assets/img/banner3.jpg'
 import emitter from '@/libs/emitter'
-// import PaginationComponent from '@/components/PaginationComponent.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
 export default {
   data () {
@@ -108,7 +109,7 @@ export default {
     }
   },
   components: {
-    // PaginationComponent,
+    PaginationComponent,
     LoadingComponent
   },
   methods: {

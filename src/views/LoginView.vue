@@ -1,6 +1,8 @@
 <template>
-  <VLoading :active="isLoading" :z-index="1060"></VLoading>
-    <div
+  <VLoading :active="isLoading" :z-index="1060">
+    <LoadingComponent />
+  </VLoading>
+  <div
     class="position-relative d-flex align-items-center justify-content-center"
     style="min-height: 350px"
   >
@@ -78,7 +80,7 @@
                 class="invalid-feedback"
               ></ErrorMessage>
             </div>
-            <button class="btn btn-lg btn-primary w-100 mt-3" type="submit" >
+            <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
               登入
             </button>
           </VForm>
@@ -101,8 +103,10 @@
 </style>
 <script>
 import emitter from '@/libs/emitter'
+import LoadingComponent from '@/components/LoadingComponent.vue'
 import BannerImage from '@/assets/img/banner3.jpg'
 export default {
+  components: { LoadingComponent },
   data () {
     return {
       form: {

@@ -25,16 +25,16 @@
     </ul>
 
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <ul class="border list-unstyled">
-          <li class="border-bottom h2">訂單明細</li>
+          <li class="border-bottom">訂單明細</li>
           <li
             class="card border-0 p-3"
             v-for="cart in carts.carts"
             :key="cart.id + '123'"
           >
             <div class="row g-0">
-              <div class="col-4 col-md-3 col-lg-4">
+              <div class="col-2">
                 <img
                   :src="cart.product.imageUrl"
                   class="img-fluid"
@@ -42,83 +42,35 @@
                   alt=""
                 />
               </div>
-              <div
-                class="col-8 col-md-9 col-lg-8 g-3 d-flex flex-column g-3 justify-content-around"
-              >
+              <div class="col-10">
                 <div class="card-body p-1">
-                  <p class="card-title fs-5 text-start">
-                    {{ cart.product.title }}
-                  </p>
-                  <p class="text-start mb-0">
+                  <div class="d-flex justify-content-between">
+                    <p class="card-title">{{ cart.product.title }}</p>
+                    <p class="card-title">X {{ cart.qty }}</p>
+                  </div>
+                  <p class="card-text text-start mb-0">
                     <small class="text-muted"
-                      >NT${{ cart.product.price }} / {{ cart.product.unit }}
+                      >NT${{ cart.product.price }}
                     </small>
                   </p>
-                  <p class="mb-0 text-end fs-4">
+                  <p class="mb-0 text-end">
                     NT${{ cart.qty * cart.product.price }}
                   </p>
-                </div>
-                <div class="row align-items-center">
-                  <div class="col-4">
-                    <button
-                      type="button"
-                      class="btn btn-outline-danger btn-sm"
-                      @click="delCart(cart.id, cart.product.title)"
-                    >
-                      <i
-                        class="fas fa-spinner fa-pulse"
-                        v-if="isLoadingItem === cart.id"
-                      ></i>
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                  <div class="col-8">
-                    <div class="input-group input-group-sm">
-                      <div class="input-group">
-                        <button
-                          :disabled="cart.qty <= 1"
-                          class="btn btn-outline-dark"
-                          @click="updateCart(cart, cart.qty--)"
-                        >
-                          <i class="bi bi-dash-lg"></i>
-                        </button>
-
-                        <input
-                          v-model.number="cart.qty"
-                          min="1"
-                          type="text"
-                          class="form-control text-center"
-                          readonly="readonly"
-                        />
-                        <!-- @blur="updateCart(cart)" -->
-                        <button
-                          class="btn btn-outline-dark"
-                          @click="updateCart(cart, cart.qty++)"
-                        >
-                          <i class="bi bi-plus-lg"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </li>
-          <li
-            class="border-0 p-3 border-top d-flex justify-content-between fs-4"
-          >
+          <li class="border-0 p-3 border-top d-flex justify-content-between ">
             <p class="p-1">總計</p>
             <p class="p-1">NT${{ carts.final_total }}</p>
           </li>
         </ul>
       </div>
-      <div class="col-lg-8 row justify-content-center text-start">
+      <div class="col-md-8 row justify-content-center text-start">
         <div class="text-start h2 border-bottom-0">訂購人資訊</div>
         <VForm ref="form" v-slot="{ errors }" @submit="sendOrder">
           <div class="mb-3">
-            <label for="email" class="form-label"
-              >Email <span class="text-danger">*</span></label
-            >
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
             <VField
               id="email"
               name="email"
@@ -134,9 +86,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="name" class="form-label"
-              >收件人姓名 <span class="text-danger">*</span></label
-            >
+            <label for="name" class="form-label">收件人姓名 <span class="text-danger">*</span></label>
             <VField
               id="name"
               name="姓名"
@@ -151,9 +101,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="tel" class="form-label"
-              >收件人電話 <span class="text-danger">*</span></label
-            >
+            <label for="tel" class="form-label">收件人電話 <span class="text-danger">*</span></label>
             <VField
               id="tel"
               name="電話"
@@ -168,9 +116,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="address" class="form-label"
-              >收件人地址 <span class="text-danger">*</span></label
-            >
+            <label for="address" class="form-label">收件人地址 <span class="text-danger">*</span></label>
             <VField
               id="address"
               name="地址"
@@ -239,7 +185,7 @@
   /* background-image: linear-gradient(9deg,#999,#ccc); */
   background-color: #999;
 }
-.card-body .card-footer {
+.card-body .card-footer{
   letter-spacing: 0.25rem;
 }
 </style>
@@ -266,7 +212,26 @@ export default {
       isLoading: false
     }
   },
-  watch: {},
+  watch: {
+    'carts.carts': {
+      handler (n, o) {
+        Object.keys(n).forEach((index) => {
+          const AfterQty = o || 'no'
+          console.log(AfterQty)
+          if (n[index].qty <= 0) {
+            n[index].qty = '0'
+            console.log(n[index].qty)
+            // n[index].qty = o[index].qty
+          }
+        })
+        // console.log(n, o)
+      },
+      deep: true
+    },
+    'carts.carts.qty' (n, o) {
+      console.log(n, o)
+    }
+  },
   methods: {
     getCarts () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/`
@@ -274,7 +239,6 @@ export default {
       this.$http
         .get(url)
         .then((res) => {
-          console.log(res)
           this.carts = res.data.data
           this.isLoading = false
         })
@@ -320,7 +284,7 @@ export default {
         })
     },
     updateCart (cart) {
-      this.isLoadingItem = cart.qty
+      this.isLoadingItem = cart.id
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${cart.id}`
       const data = {
         product_id: cart.product_id,

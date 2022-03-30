@@ -24,7 +24,7 @@
       </li>
     </ul>
 
-    <div class="row">
+    <div class="row align-content-start">
       <div class="col-lg-4">
         <ul class="border list-unstyled">
           <li class="border-bottom h2">訂單明細</li>

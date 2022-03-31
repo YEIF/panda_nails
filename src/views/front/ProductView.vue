@@ -3,7 +3,7 @@
   <VLoading :active="isLoading" :z-index="1060">
     <LoadingComponent></LoadingComponent>
   </VLoading>
-    <div
+  <div
     class="position-relative d-flex align-items-center justify-content-center"
     style="min-height: 350px"
   >
@@ -89,6 +89,73 @@
     </div>
     <div>
       <h2 class="my-5">相關產品</h2>
+      <swiper
+        :modules="modules"
+        Navigation
+        :pagination="{ clickable: false }"
+        :loop="false"
+        :breakpoints="{
+          '640': {
+            slidesPerView: 1,
+            spaceBetween: 0
+          },
+          '768': {
+            slidesPerView: 2,
+            spaceBetween: 30
+          },
+          '1024': {
+            slidesPerView: 3,
+            spaceBetween: 30
+          }
+        }"
+        :autoplay="{
+          delay: 1500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        }"
+      >
+        <swiper-slide v-for="product in products" :key="product.id">
+          <div class="overflow-hidden">
+            <router-link :to="`/product/${product.id}`" class="">
+              <div
+                class="card-img-top card-img-scale"
+                style="
+                  height: 300px;
+                  background-size: cover;
+                  background-position: center;
+                "
+                :style="{ backgroundImage: `url(${product.imageUrl})` }"
+              ></div>
+            </router-link>
+          </div>
+
+          <div class="card-body text-start">
+            <h5 class="card-title fs-4 fw-bold">
+              {{ product.title }}
+              <span
+                class="position-absolute start-90 translate-middle badge rounded-pill bg-success fs-7"
+              >
+                {{ product.category }}
+              </span>
+            </h5>
+            <div class="card-text d-flex justify-content-between">
+              <p class="fw-bold card-text text-danger fs-5 my-1">
+                NT ${{ product.price }} 元
+                <del class="m-start fs-6 small text-muted">
+                  {{ product.origin_price }} 元</del
+                >
+              </p>
+              <button
+                @click.prevent="addToCart(product.id, product.title)"
+                :disabled="isLoadingItem === product.id"
+                class="card-link text-decoration-none"
+              >
+                <i class="bi bi-cart-plus fs-3"></i>
+              </button>
+            </div>
+          </div>
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
@@ -98,7 +165,14 @@
   line-height: 2;
 }
 .product-img {
-    min-height: 340px;
+  min-height: 340px;
+}
+.card-img-scale:hover {
+  transform: scale(1.2);
+}
+.card-img-scale {
+  transform: scale(1);
+  transition: all 0.5s ease-out;
 }
 // .product-img span,
 // .photo-sm span {
@@ -127,14 +201,19 @@
 import LoadingComponent from '@/components/LoadingComponent.vue'
 import emitter from '@/libs/emitter'
 import BannerImage from '@/assets/img/banner3.jpg'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination, Autoplay } from 'swiper'
 export default {
-  components: { LoadingComponent },
+  components: { LoadingComponent, Swiper, SwiperSlide },
   data () {
     return {
       product: {},
+      products: {},
       qty: 1,
       isLoading: false,
-      BannerImage: BannerImage
+      isLoadingItem: '',
+      BannerImage: BannerImage,
+      modules: [Navigation, Pagination, Autoplay]
     }
   },
   watch: {
@@ -142,9 +221,34 @@ export default {
       if (n <= 0) {
         this.qty = o
       }
+    },
+    $route (to) {
+      this.id = to.params.id
+      this.getProduct()
     }
   },
   methods: {
+    getProducts (page = 1) {
+      this.isLoading = true
+      const category = this.product.category
+      this.$http
+        .get(
+          `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}&category=${category}`
+        )
+        .then((res) => {
+          this.products = res.data.products
+          // 過濾本身產品
+          const { id } = this.product
+          this.products = Object.values(this.products).filter(
+            (item) => item.id !== id
+          )
+          this.isLoading = false
+        })
+        .catch((err) => {
+          console.dir(err)
+          this.isLoading = false
+        })
+    },
     getProduct () {
       const { id } = this.$route.params
       this.isLoading = true
@@ -153,6 +257,8 @@ export default {
         .get(url)
         .then((res) => {
           this.product = res.data.product
+          this.getProducts()
+          console.log(this.product)
           this.isLoading = false
         })
         .catch((err) => {

@@ -25,16 +25,16 @@
           <li class="nav-item px-2">
             <router-link class="nav-link" to="/products">產品頁面</router-link>
           </li>
-          <li class="nav-item px-2">
+          <!-- <li class="nav-item px-2">
             <router-link class="nav-link" to="/OrderTracking">訂單查詢</router-link>
-          </li>
+          </li> -->
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 flex-row justify-content-around">
-          <li class="nav-item px-2">
+          <!-- <li class="nav-item px-2">
             <router-link class="nav-link" to="/collect">
               <i class="bi bi-heart-fill icon-font"></i>
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item px-2">
             <router-link class="nav-link" to="/login">
               <i class="bi bi-person-circle icon-font"></i>

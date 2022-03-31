@@ -11,17 +11,19 @@
     ...
   </swiper>
 </template>
+<ssji></ssji>
 <script>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
-
+import ssji from '../componentscedefa'
 // Import Swiper styles
 import 'swiper/css'
 
 export default {
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    ssji
   },
   setup () {
     const onSwiper = (swiper) => {

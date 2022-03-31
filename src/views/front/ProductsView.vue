@@ -31,7 +31,7 @@
               <div
                 class="card-img-top card-img-scale"
                 style="
-                  height: 250px;
+                  height: 300px;
                   background-size: cover;
                   background-position: center;
                 "
@@ -105,7 +105,8 @@ export default {
       },
       // VLoading
       isLoading: false,
-      BannerImage: BannerImage
+      BannerImage: BannerImage,
+      category: '流水畫'
     }
   },
   components: {
@@ -113,11 +114,11 @@ export default {
     LoadingComponent
   },
   methods: {
-    getProducts (page = 1) {
+    getProducts (page = 1, category = '') {
       this.isLoading = true
       this.$http
         .get(
-          `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}`
+          `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}&category=${category}`
         )
         .then((res) => {
           this.products = res.data.products

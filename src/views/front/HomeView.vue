@@ -1,4 +1,7 @@
 <template>
+  <VLoading :active="isLoading" :z-index="1060">
+    <LoadingComponent></LoadingComponent>
+  </VLoading>
   <div
     class="position-relative d-flex align-items-center justify-content-center"
     style="min-height: 350px"
@@ -18,7 +21,78 @@
     <h2 class="fw-bold">美麗雙手，自信人生</h2>
   </div>
   <div class="container">
-    <h1 class="mt-5">最新款式</h1>
+    <h1 class="mt-5">所有款式</h1>
+    <swiper
+      :modules="modules"
+      Navigation
+      :pagination="{ clickable: false }"
+      :loop="true"
+      :breakpoints="{
+        '640': {
+          slidesPerView: 1,
+          spaceBetween: 0
+        },
+        '768': {
+          slidesPerView: 2,
+          spaceBetween: 30
+        },
+        '1024': {
+          slidesPerView: 3,
+          spaceBetween: 30
+        }
+      }"
+      :autoplay="{
+        delay: 1500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      }"
+    >
+      <swiper-slide v-for="product in products" :key="product.id">
+        <div class="overflow-hidden">
+          <router-link :to="`/product/${product.id}`" class="">
+            <div
+              class="card-img-top card-img-scale"
+              style="
+                height: 300px;
+                background-size: cover;
+                background-position: center;
+              "
+              :style="{ backgroundImage: `url(${product.imageUrl})` }"
+            ></div>
+          </router-link>
+        </div>
+
+        <div class="card-body text-start">
+          <h5 class="card-title fs-4 fw-bold">
+            {{ product.title }}
+            <span
+              class="position-absolute start-90 translate-middle badge rounded-pill bg-success fs-7"
+            >
+              {{ product.category }}
+            </span>
+          </h5>
+          <div class="card-text d-flex justify-content-between">
+            <p class="fw-bold card-text text-danger fs-5 my-1">
+              NT ${{ product.price }} 元
+              <del class="m-start fs-6 small text-muted">
+                {{ product.origin_price }} 元</del
+              >
+            </p>
+            <button
+              @click.prevent="addToCart(product.id, product.title)"
+              :disabled="isLoadingItem === product.id"
+              class="card-link text-decoration-none"
+            >
+              <i
+                class="fas fa-spinner fa-pulse"
+                v-if="isLoadingItem === product.id"
+              ></i>
+              <i class="bi bi-cart-plus fs-3"></i>
+            </button>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper>
     <!-- 迷思、預約 -->
     <div class="row row-cols-1 row-cols-md-2 mt-5">
       <div class="col">
@@ -93,11 +167,67 @@
 
 <script>
 import BannerImage from '@/assets/img/banner3.jpg'
+import emitter from '@/libs/emitter'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import LoadingComponent from '@/components/LoadingComponent.vue'
+import { Navigation, Pagination, Autoplay } from 'swiper'
 export default {
+  components: { LoadingComponent, Swiper, SwiperSlide },
   data () {
     return {
-      BannerImage: BannerImage
+      BannerImage: BannerImage,
+      products: [],
+      isLoading: false,
+      isLoadingItem: false,
+      modules: [Navigation, Pagination, Autoplay]
     }
+  },
+  methods: {
+    getProducts () {
+      this.isLoading = true
+      this.$http
+        .get(
+          `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
+        )
+        .then((res) => {
+          this.products = res.data.products
+          this.isLoading = false
+        })
+        .catch((err) => {
+          console.dir(err)
+          this.isLoading = false
+        })
+    },
+    addToCart (id, title, qty = 1) {
+      const data = {
+        product_id: id,
+        qty: qty
+      }
+      this.isLoadingItem = id
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/`
+      this.$http
+        .post(url, { data })
+        .then((res) => {
+          this.isLoadingItem = ''
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${title}${res.data.message}`
+          })
+          // get cart
+          emitter.emit('get-cart-num')
+        })
+        .catch((err) => {
+          console.dir(err)
+          this.isLoadingItem = ''
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
+        })
+    }
+  },
+  mounted () {
+    this.getProducts()
   }
 }
 </script>

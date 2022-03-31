@@ -3,16 +3,42 @@
   <VLoading :active="isLoading" :z-index="1060">
     <LoadingComponent></LoadingComponent>
   </VLoading>
-  <div class="container">
+    <div
+    class="position-relative d-flex align-items-center justify-content-center"
+    style="min-height: 350px"
+  >
+    <div
+      class="position-absolute"
+      style="
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-position: center center;
+        opacity: 0.3;
+      "
+      :style="{ backgroundImage: `url(${BannerImage})` }"
+    ></div>
+    <h2 class="fw-bold">單一產品</h2>
+  </div>
+  <div class="container my-5">
     <div class="row row-cols-1 row-cols-md-2">
       <div class="col">
-
-        <span><img class="img-fluid object-fit-contain" :src="product.imagesUrl" alt="" /></span>
-        <!-- <div
+        <!-- <span><img class="img-fluid object-fit-contain" :src="product.imagesUrl" alt="" /></span> -->
+        <div
+          class="h-100 product-img"
           :style="{ backgroundImage: `url(${product.imagesUrl})` }"
-          style="height: 300px"
-        ></div> -->
+          style="
+            background-size: cover;
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center 70%;
+          "
+        ></div>
       </div>
+      <!-- <div class="col product-img">
+        <span :style="{ backgroundImage: `url(${product.imagesUrl})` }"></span>
+      </div> -->
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mt-3">
@@ -61,6 +87,9 @@
         </div>
       </div>
     </div>
+    <div>
+      <h2 class="my-5">相關產品</h2>
+    </div>
   </div>
 </template>
 <style lang="scss">
@@ -68,17 +97,44 @@
 .product-content {
   line-height: 2;
 }
+.product-img {
+    min-height: 340px;
+}
+// .product-img span,
+// .photo-sm span {
+//   display: block;
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+//   position: relative;
+//   background-repeat: no-repeat;
+//   background-position: center 60%;
+//   background-size: cover;
+// }
+// @media (min-width: 768px) {
+//   .product-img {
+//     height: calc(30vw - 2em);
+//     max-height: 400px;
+//     min-height: 340px;
+//   }
+//   .product-img span,
+//   .photo-sm span {
+//     background-position: center 70%;
+//   }
+// }
 </style>
 <script>
 import LoadingComponent from '@/components/LoadingComponent.vue'
 import emitter from '@/libs/emitter'
+import BannerImage from '@/assets/img/banner3.jpg'
 export default {
   components: { LoadingComponent },
   data () {
     return {
       product: {},
       qty: 1,
-      isLoading: false
+      isLoading: false,
+      BannerImage: BannerImage
     }
   },
   watch: {

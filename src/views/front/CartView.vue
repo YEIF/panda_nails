@@ -43,7 +43,7 @@
                 />
               </div>
               <div
-                class="col-8 col-md-9 col-lg-8 g-3 d-flex flex-column g-3 justify-content-around"
+                class="col-8 col-md-9 col-lg-8 g-3 d-flex flex-column g-3 justify-content-between"
               >
                 <div class="card-body p-1">
                   <p class="card-title fs-5 text-start">
@@ -58,7 +58,7 @@
                     NT${{ cart.qty * cart.product.price }}
                   </p>
                 </div>
-                <div class="row align-items-center">
+                <div class="row">
                   <div class="col-4">
                     <button
                       type="button"

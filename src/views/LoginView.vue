@@ -24,7 +24,7 @@
     <div class="row">
       <img
         class="col-6 d-none d-md-block login-img px-0 shadow-lg rounded"
-        src="@/assets/img/login_1.jpg"
+        src="@/assets/img/login1.jpg"
         alt="login-img"
       />
       <div class="col-md-6 d-flex flex-column align-items-center">

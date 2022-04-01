@@ -168,8 +168,12 @@
           </div>
           <div v-else>
             <i class="bi bi-info-square fs-1"></i>
-            <p class="fs-7" style="letter-spacing: 2px;">購物車內沒有商品</p>
-            <a href="#/products?category=all&amp;page=1" class="btn btn-primary py-2 px-4">挑選商品</a>
+            <p class="fs-7" style="letter-spacing: 2px">購物車內沒有商品</p>
+            <a
+              href="#/products?category=all&amp;page=1"
+              class="btn btn-primary py-2 px-4"
+              >挑選商品</a
+            >
           </div>
         </ul>
       </div>
@@ -515,24 +519,28 @@
 </template>
 <style>
 .list li {
-  width: 150px;
-  height: 150px;
+  min-width: 100px;
+  min-height: 100px;
   background-color: #7fd0fb;
   position: relative;
 }
 .list li + li {
-  margin-left: 100px;
+  margin-left: 10%;
+  /* margin-left: 13.33%; */
 }
 .list li + li::before {
   content: '';
   position: absolute;
   width: 100px;
+  /* width: 64%; */
   height: 5px;
   background-color: #7fd0fb;
   top: 0px;
   bottom: 0px;
   left: -100px;
+  /* left: -64%; */
   margin: auto;
+  z-index:-1;
 }
 .list li.active ~ li {
   background-image: linear-gradient(9deg, #999, #ccc);
@@ -544,6 +552,31 @@
 }
 .card-body .card-footer {
   letter-spacing: 0.25rem;
+}
+@media (min-width: 768px) {
+  .list li {
+    width: 150px;
+    height: 150px;
+    background-color: #7fd0fb;
+    position: relative;
+  }
+  .list li + li {
+    margin-left: 100px;
+    /* margin-left: 13.33%; */
+  }
+  .list li + li::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    /* width: 64%; */
+    height: 5px;
+    background-color: #7fd0fb;
+    top: 0px;
+    bottom: 0px;
+    left: -100px;
+    /* left: -64%; */
+    margin: auto;
+  }
 }
 </style>
 <script>

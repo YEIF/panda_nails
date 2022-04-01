@@ -59,7 +59,7 @@
               <button
                 @click.prevent="addToCart(product.id, product.title)"
                 :disabled="isLoadingItem === product.id"
-                class="btn btn-primary card-link text-decoration-none"
+                class="btn btn-outline-primary card-link text-decoration-none"
               >
                 <i
                   class="fas fa-spinner fa-pulse"

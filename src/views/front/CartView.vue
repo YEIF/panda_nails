@@ -6,7 +6,7 @@
   <div class="container">
     <ul class="list d-flex justify-content-center list-unstyled">
       <li
-        class="rounded-circle d-lg-flex flex-column justify-content-center"
+        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
         :class="{ active: stepStatus.createOrder }"
       >
         <i class="bi bi-card-checklist fs-2"></i>
@@ -14,7 +14,7 @@
         <p>訂單建立</p>
       </li>
       <li
-        class="rounded-circle d-lg-flex flex-column justify-content-center"
+        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
         :class="{ active: stepStatus.checkOrder }"
       >
         <i class="bi bi-credit-card fs-2"></i>
@@ -22,7 +22,7 @@
         <p>確認及付款</p>
       </li>
       <li
-        class="rounded-circle d-lg-flex flex-column justify-content-center"
+        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
         :class="{ active: stepStatus.success }"
       >
         <i class="bi bi-cart-check fs-2"></i>

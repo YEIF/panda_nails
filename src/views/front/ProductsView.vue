@@ -50,7 +50,7 @@
               </span>
             </h5>
             <div class="card-text d-flex justify-content-between">
-              <p class="fw-bold card-text text-danger fs-5 my-1">
+              <p class="fw-bold card-text text-danger fs-5 my-1 align-self-center">
                 NT ${{ product.price }} 元
                 <del class="m-start fs-6 small text-muted">
                   {{ product.origin_price }} 元</del
@@ -59,7 +59,7 @@
               <button
                 @click.prevent="addToCart(product.id, product.title)"
                 :disabled="isLoadingItem === product.id"
-                class="card-link text-decoration-none"
+                class="btn btn-primary card-link text-decoration-none"
               >
                 <i
                   class="fas fa-spinner fa-pulse"

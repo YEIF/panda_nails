@@ -81,7 +81,7 @@
             <button
               @click.prevent="addToCart(product.id, product.title)"
               :disabled="isLoadingItem === product.id"
-              class="card-link text-decoration-none"
+              class="btn btn-primary  card-link text-decoration-none"
             >
               <i
                 class="fas fa-spinner fa-pulse"
@@ -159,7 +159,7 @@
       </div>
 
       <div class="col">
-        <img class="img-fluid" src="@/assets/img/index_img.jpg" alt="" />
+        <img class="img-fluid" src="@/assets/img/index_img2.jpg" alt="" />
       </div>
     </div>
   </div>

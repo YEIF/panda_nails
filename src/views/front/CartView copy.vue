@@ -46,7 +46,7 @@
             </button>
           </li>
 
-          <div v-if="carts.carts?.length > 0">
+          <div v-if="carts">
             <li
               class="card border-0 p-3"
               v-for="cart in carts.carts"
@@ -166,7 +166,6 @@
               </div>
             </li>
           </div>
-
           <div v-else>
             <i class="bi bi-info-square fs-1"></i>
             <p class="fs-7" style="letter-spacing: 2px">購物車內沒有商品</p>

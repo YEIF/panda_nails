@@ -44,7 +44,7 @@
             <h5 class="card-title fs-4 fw-bold">
               {{ product.title }}
               <span
-                class="position-absolute start-90 translate-middle badge rounded-pill bg-success fs-7"
+                class="position-absolute start-85 translate-middle badge rounded-pill bg-success fs-7"
               >
                 {{ product.category }}
               </span>
@@ -87,6 +87,9 @@
 .card-img-scale {
   transform: scale(1);
   transition: all 0.5s ease-out;
+}
+.start-85{
+  left: 85% !important;
 }
 </style>
 <script>

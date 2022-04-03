@@ -6,7 +6,7 @@
   <div class="container">
     <ul class="list d-flex justify-content-center list-unstyled">
       <li
-        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
+        class="rounded-circle d-flex flex-column justify-content-center text-nowrap text-white"
         :class="{ active: stepStatus.createOrder }"
       >
         <i class="bi bi-card-checklist fs-2"></i>
@@ -522,7 +522,7 @@
 .list li {
   min-width: 100px;
   min-height: 100px;
-  background-color: #7adabb;
+  background-color: #25705a;
   position: relative;
 }
 .list li + li {
@@ -533,7 +533,7 @@
   position: absolute;
   width: 100px;
   height: 5px;
-  background-color: #7adabb;
+  background-color: #25705a;
   top: 0px;
   bottom: 0px;
   left: -100px;
@@ -555,7 +555,7 @@
   .list li {
     width: 150px;
     height: 150px;
-    background-color: #7adabb;
+    background-color: #25705a;
     position: relative;
   }
   .list li + li {
@@ -566,7 +566,7 @@
     position: absolute;
     width: 100px;
     height: 5px;
-    background-color: #7adabb;
+    background-color: #25705a;
     top: 0px;
     bottom: 0px;
     left: -100px;

@@ -264,7 +264,7 @@
           <div class="text-end">
             <button
               type="submit"
-              class="btn btn-danger"
+              class="btn btn-primary"
               :disabled="
                 Object.keys(errors).length > 0 || carts.carts?.length === 0
               "
@@ -381,12 +381,12 @@
         </div>
         <div class="d-flex justify-content-between border-top">
           <div class="text-start">
-            <button type="button" class="btn btn-danger" @click="createOrder">
+            <button type="button" class="btn btn-outline-dark" @click="createOrder">
               上一步
             </button>
           </div>
           <div class="text-end">
-            <button type="button" class="btn btn-danger" @click="sendOrder">
+            <button type="button" class="btn btn-primary" @click="sendOrder">
               確認付款
             </button>
           </div>

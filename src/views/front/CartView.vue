@@ -381,7 +381,11 @@
         </div>
         <div class="d-flex justify-content-between border-top">
           <div class="text-start">
-            <button type="button" class="btn btn-outline-dark" @click="createOrder">
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              @click="createOrder"
+            >
               上一步
             </button>
           </div>
@@ -525,6 +529,9 @@
   background-color: #25705a;
   position: relative;
 }
+.list .active {
+  color: #fff;
+}
 .list li + li {
   margin-left: 10%;
 }
@@ -538,7 +545,7 @@
   bottom: 0px;
   left: -100px;
   margin: auto;
-  z-index:-1;
+  z-index: -1;
 }
 .list li.active ~ li {
   background-image: linear-gradient(9deg, #999, #ccc);

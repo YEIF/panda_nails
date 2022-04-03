@@ -43,7 +43,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mt-3">
             <li class="breadcrumb-item">
-              <router-link to="/products">產品頁面</router-link>
+              <router-link to="/products" class="text-decoration-none">產品頁面</router-link>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               {{ product.title }}

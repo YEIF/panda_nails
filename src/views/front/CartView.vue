@@ -6,7 +6,7 @@
   <div class="container">
     <ul class="list d-flex justify-content-center list-unstyled">
       <li
-        class="rounded-circle d-flex flex-column justify-content-center text-nowrap text-white"
+        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
         :class="{ active: stepStatus.createOrder }"
       >
         <i class="bi bi-card-checklist fs-2"></i>

@@ -148,7 +148,7 @@
               <button
                 @click.prevent="addToCart(product.id, product.title)"
                 :disabled="isLoadingItem === product.id"
-                class="card-link text-decoration-none"
+                class="card-link text-decoration-none btn btn-outline-primary"
               >
                 <i class="bi bi-cart-plus fs-3"></i>
               </button>

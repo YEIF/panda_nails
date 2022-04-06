@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkpanda_nails"]=self["webpackChunkpanda_nails"]||[]).push([[2],{5002:function(n,a,e){e.r(a),e.d(a,{default:function(){return f}});var i=e(6252);const r={class:"admin"},s=(0,i._)("h2",null,"後台首頁",-1),u=[s];function t(n,a,e,s,t,c){return(0,i.wg)(),(0,i.iD)("div",r,u)}var c={name:"AdminView"},d=e(3744);const l=(0,d.Z)(c,[["render",t]]);var f=l}}]);
+//# sourceMappingURL=2.7fafdee8.js.map

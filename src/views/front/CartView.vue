@@ -96,7 +96,7 @@
                         <div class="input-group">
                           <button
                             :disabled="cart.qty <= 1"
-                            class="btn btn-outline-dark"
+                            class="btn btn-outline-primary"
                             @click="updateCart(cart, cart.qty--)"
                           >
                             <i class="bi bi-dash-lg"></i>
@@ -111,7 +111,7 @@
                           />
                           <!-- @blur="updateCart(cart)" -->
                           <button
-                            class="btn btn-outline-dark"
+                            class="btn btn-outline-primary"
                             @click="updateCart(cart, cart.qty++)"
                           >
                             <i class="bi bi-plus-lg"></i>

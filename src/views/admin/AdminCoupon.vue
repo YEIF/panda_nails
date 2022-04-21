@@ -21,25 +21,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, key) in coupons" :key="key">
-          <td>{{ item.title }}</td>
-          <td>{{ item.percent }}%</td>
-          <td>{{ DateFn(item.due_date) }}</td>
+        <tr v-for="(coupon, key) in coupons" :key="key">
+          <td>{{ coupon.title }}</td>
+          <td>{{ coupon.percent }}%</td>
+          <td>{{ DateFn(coupon.due_date) }}</td>
           <td>
-            <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
-            <span v-else class="text-muted">未啟用</span>
+            <span v-if="coupon.is_enabled === 1" class="text-success"
+              >啟用</span
+            >
+            <span v-else class="text-muted text-danger">未啟用</span>
           </td>
           <td>
             <div class="btn-group">
               <button
+                type="button"
                 class="btn btn-outline-primary btn-sm"
-                @click="openCouponModal('edit', item)"
+                @click="openCouponModal('edit', coupon)"
               >
                 編輯
               </button>
               <button
+                type="button"
                 class="btn btn-outline-danger btn-sm"
-                @click="openCouponModal('del', item)"
+                @click="openCouponModal('del', coupon)"
               >
                 刪除
               </button>
@@ -53,18 +57,18 @@
       :temp-coupon="tempCoupon"
       :is-new="isNew"
       @get-coupons="getCoupons"
-    ></CouponModalComponent>
+    />
     <DelCouponModalComponent
       ref="delCouponModal"
       :temp-coupon="tempCoupon"
       @get-coupons="getCoupons"
-    ></DelCouponModalComponent>
+    />
   </div>
 </template>
 <script>
-import { DateFn } from '@/libs/date'
-import CouponModalComponent from '@/components/CouponModalComponent.vue'
-import DelCouponModalComponent from '@/components/DelCouponModalComponent.vue'
+import { DateFn } from '@/libs/methods'
+import CouponModalComponent from '@/components/admin/CouponModalComponent.vue'
+import DelCouponModalComponent from '@/components/admin/DelCouponModalComponent.vue'
 export default {
   components: {
     CouponModalComponent,
@@ -88,7 +92,7 @@ export default {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons`
       this.$http
-        .get(url, this.tempProduct)
+        .get(url)
         .then((res) => {
           this.coupons = res.data.coupons
           this.isLoading = false

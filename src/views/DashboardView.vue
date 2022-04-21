@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import DashNavbar from '@/components/DashNavbar.vue'
+import DashNavbar from '@/components/admin/DashNavbar.vue'
 import emitter from '@/libs/emitter'
 export default {
   components: {

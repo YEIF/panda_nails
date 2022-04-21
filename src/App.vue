@@ -3,6 +3,15 @@
   <router-view />
 </template>
 
+<script>
+import ToastMessageComponent from '@/components/ToastMessageComponent.vue'
+export default {
+  components: {
+    ToastMessageComponent
+  }
+}
+</script>
+
 <style lang="scss">
 // @import 'bootstrap/scss/bootstrap';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -10,11 +19,14 @@
 @import "assets/stylesheets/all.scss";
 // @import 'assets/css/loading.css'; 全域載入
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 微軟正黑體,Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 #nav {
   padding: 30px;
@@ -27,11 +39,3 @@
   }
 }
 </style>
-<script>
-import ToastMessageComponent from '@/components/ToastMessageComponent.vue'
-export default {
-  components: {
-    ToastMessageComponent
-  }
-}
-</script>

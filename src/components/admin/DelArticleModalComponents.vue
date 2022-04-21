@@ -1,17 +1,17 @@
 <template>
   <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div
-    id="delCouponModal"
+    id="delArticleModal"
     ref="modal"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="delCouponModalLabel"
+    aria-labelledby="delArticleModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content border-0">
         <div class="modal-header bg-danger text-white">
-          <h5 id="delCouponModalLabel" class="modal-title">
+          <h5 id="delArticleModalLabel" class="modal-title">
             <span>刪除產品</span>
           </h5>
           <button
@@ -23,21 +23,21 @@
         </div>
         <div class="modal-body">
           是否刪除
-          <strong class="text-danger">{{ tempCoupon.title }}</strong>
-          優惠卷(刪除後將無法恢復)。
+          <strong class="text-danger">{{ tempArticle.title }}</strong>
+          文章(刪除後將無法恢復)。
         </div>
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-outline-secondary"
-            @click="closeModal"
+            @click="hideModal"
           >
             取消
           </button>
           <button
             type="button"
             class="btn btn-danger"
-            @click="delCoupon()"
+            @click="delArticle()"
           >
             確認刪除
           </button>
@@ -46,36 +46,40 @@
     </div>
   </div>
 </template>
-
 <script>
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
 import emitter from '@/libs/emitter'
 export default {
-  props: ['tempCoupon'],
-  emits: ['get-coupons'],
+  // props: ['tempArticle'],
+  props: {
+    tempArticle: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  emits: ['get-articles'],
   mixins: [BootstrapModal],
   data () {
     return { isLoading: false }
   },
   methods: {
-    delCoupon () {
+    delArticle () {
       this.isLoading = true
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/Article/${this.tempArticle.id}`
       this.$http
         .delete(url)
         .then((res) => {
           this.isLoading = false
-          this.$emit('get-coupons')
-          this.closeModal()
-          emitter.emit('push-message', { style: 'success', title: `已刪除${this.tempCoupon.title}優惠卷` })
+          this.$emit('get-articles')
+          this.hideModal()
+          emitter.emit('push-message', { style: 'success', title: `已刪除${this.tempArticle.title}文章` })
         })
         .catch((err) => {
           this.isLoading = false
           console.dir(err)
         })
-    },
-    closeModal () {
-      this.modal.hide()
     }
   }
 }

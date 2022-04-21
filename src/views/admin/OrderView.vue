@@ -66,31 +66,27 @@
         </template>
       </tbody>
     </table>
-    <PaginationComponent
-      :pages="pagination"
-      @change-pages="getOrders"
-    ></PaginationComponent>
+    <PaginationComponent :pages="pagination" @change-pages="getOrders" />
     <OrderModalComponent
       ref="orderModal"
       :temp-order="tempOrder"
       :current-page="pagination.current_page"
+      @get-orders="getOrders"
       @update-paid="updatePaid"
-    >
-    </OrderModalComponent>
+    />
     <DelOrderModalComponent
       ref="delOrderModal"
       :temp-order="tempOrder"
       :current-page="pagination.current_page"
       @get-orders="getOrders"
-    >
-    </DelOrderModalComponent>
+    />
   </div>
 </template>
 <script>
-import { DateFn } from '@/libs/date'
-import DelOrderModalComponent from '@/components/DelOrderModalComponent.vue'
+import { DateFn } from '@/libs/methods'
+import DelOrderModalComponent from '@/components/admin/DelOrderModalComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
-import OrderModalComponent from '@/components/OrderModalComponent.vue'
+import OrderModalComponent from '@/components/admin/OrderModalComponent.vue'
 import emitter from '@/libs/emitter'
 export default {
   components: {
@@ -116,7 +112,6 @@ export default {
           this.orders = res.data.orders
           this.pagination = res.data.pagination
           this.isLoading = false
-          // console.log(res)
         })
         .catch((err) => {
           console.dir(err)
@@ -142,16 +137,21 @@ export default {
         .put(api, { data: paid })
         .then((res) => {
           this.isLoading = false
-          const orderComponent = this.$refs.orderModal
-          orderComponent.hideModal()
-          this.getOrders(this.currentPage)
-          console.log(res)
-          emitter.emit('push-message', { style: 'success', title: '更新付款狀態' })
+          this.$refs.orderModal.hideModal()
+          this.getOrders(this.pagination.current_page)
+          emitter.emit('push-message', {
+            style: 'success',
+            title: '更新付款狀態'
+          })
         })
         .catch((err) => {
           console.dir(err)
           this.isLoading = false
-          emitter.emit('push-message', { style: 'danger', title: '付款狀態更新失敗', content: String(err.response.data.message) })
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: '付款狀態更新失敗',
+            content: String(err.response.data.message)
+          })
         })
     }
   },

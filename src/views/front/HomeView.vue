@@ -1,25 +1,8 @@
 <template>
   <VLoading :active="isLoading" :z-index="1060">
-    <LoadingComponent></LoadingComponent>
+    <LoadingComponent />
   </VLoading>
-  <div
-    class="position-relative d-flex align-items-center justify-content-center"
-    style="min-height: 350px"
-  >
-    <div
-      class="position-absolute"
-      style="
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-position: center center;
-        opacity: 0.3;
-      "
-      :style="{ backgroundImage: `url(${BannerImage})` }"
-    ></div>
-    <h2 class="fw-bold">美麗雙手，自信人生</h2>
-  </div>
+  <HeaderBanner msg="美麗雙手，自信人生" />
   <div class="container">
     <h1 class="mt-5">所有款式</h1>
     <swiper
@@ -47,9 +30,21 @@
         pauseOnMouseEnter: true
       }"
     >
-      <swiper-slide v-for="product in products" :key="product.id">
+      <SwiperSlide v-for="product in products" :key="product.id">
         <div class="overflow-hidden">
-          <router-link :to="`/product/${product.id}`" class="">
+          <button
+            type="button"
+            class="btn btn-primary position-absolute fs-4 p-1"
+            style="left: 20px; z-index: 1"
+            @click="toggleFavorite(product.id, product.title)"
+          >
+            <i
+              :class="
+                favoriteList.includes(product.id) ? 'bi-heart-fill' : 'bi-heart'
+              "
+            ></i>
+          </button>
+          <RouterLink :to="`/product/${product.id}`" class="">
             <div
               class="card-img-top card-img-scale"
               style="
@@ -59,19 +54,21 @@
               "
               :style="{ backgroundImage: `url(${product.imageUrl})` }"
             ></div>
-          </router-link>
+          </RouterLink>
         </div>
 
         <div class="card-body text-start">
-          <h5 class="card-title fs-4 fw-bold">
-            {{ product.title }}
-            <span
-              class="position-absolute start-90 translate-middle badge rounded-pill bg-success fs-7"
-            >
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title fs-4 fw-bold text-nowrap my-1">
+              {{ product.title }}
+            </h3>
+            <span class="badge rounded-pill bg-success fs-7">
               {{ product.category }}
             </span>
-          </h5>
-          <div class="card-text d-flex justify-content-between">
+          </div>
+          <div
+            class="card-text d-flex justify-content-between align-items-center"
+          >
             <p class="fw-bold card-text text-danger fs-5 my-1">
               NT ${{ product.price }} 元
               <del class="m-start fs-6 small text-muted">
@@ -79,6 +76,7 @@
               >
             </p>
             <button
+              type="button"
               @click.prevent="addToCart(product.id, product.title)"
               :disabled="isLoadingItem === product.id"
               class="btn btn-outline-primary card-link text-decoration-none"
@@ -91,12 +89,16 @@
             </button>
           </div>
         </div>
-      </swiper-slide>
+      </SwiperSlide>
     </swiper>
     <!-- 迷思、預約 -->
     <div class="row row-cols-1 row-cols-md-2 mt-5">
       <div class="col">
-        <img class="img-fluid" src="@/assets/img/index_img.jpg" alt="" />
+        <img
+          class="img-fluid"
+          src="@/assets/img/index_img.jpg"
+          alt="迷思、預約"
+        />
       </div>
 
       <div
@@ -105,7 +107,7 @@
       >
         <div class="fs-5 text-secondary">凝膠指甲迷失</div>
         <ul class="list-unstyled d-grid text-start">
-          <li>迷失1 ：指甲泛黃是因為缺氧?</li>
+          <li class="fw-bold">迷失1 ：指甲泛黃是因為缺氧?</li>
           <li>
             NO!!
             卸除光療指甲、指甲油後，若發現指甲泛黃，原因並不是因為缺氧，而是因為指甲油色素所致。
@@ -113,13 +115,13 @@
           <li>解：塗上護甲隔離油，可以防止指甲油色素沉澱。</li>
         </ul>
         <ul class="list-unstyled d-grid text-start">
-          <li>迷失2 ：指甲需要呼吸嗎?</li>
+          <li class="fw-bold">迷失2 ：指甲需要呼吸嗎?</li>
           <li>
             指甲跟頭髮一樣，表面並沒有氣孔，也沒有新陳代謝的功能，所以不需要呼吸新鮮的空氣。
           </li>
         </ul>
         <ul class="list-unstyled d-grid text-start">
-          <li>迷失3 ：美甲維持越久品質越好?</li>
+          <li class="fw-bold">迷失3 ：美甲維持越久品質越好?</li>
           <li>
             不是維持越久越好，指甲過久未卸除，反而會容易造成指甲斷裂或繼續滋長。
           </li>
@@ -158,31 +160,45 @@
         <br />
       </div>
 
-      <div class="col">
-        <img class="img-fluid" src="@/assets/img/index_img2.jpg" alt="" />
+      <div class="col mb-5">
+        <img
+          class="img-fluid"
+          src="@/assets/img/index_img2.jpg"
+          alt="預約注意事項"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import BannerImage from '@/assets/img/banner3.jpg'
+import HeaderBanner from '@/components/front/HeaderBanner.vue'
 import emitter from '@/libs/emitter'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
 import { Navigation, Pagination, Autoplay } from 'swiper'
+import { toThousandths } from '@/libs/methods'
 export default {
-  components: { LoadingComponent, Swiper, SwiperSlide },
+  components: { LoadingComponent, Swiper, SwiperSlide, HeaderBanner },
   data () {
     return {
-      BannerImage: BannerImage,
       products: [],
       isLoading: false,
       isLoadingItem: false,
       modules: [Navigation, Pagination, Autoplay]
     }
   },
+  watch: {
+    favoriteList: {
+      handler () {
+        localStorage.setItem('Favorite', JSON.stringify(this.favoriteList))
+        emitter.emit('get-favorite-num')
+      },
+      deep: true
+    }
+  },
   methods: {
+    toThousandths,
     getProducts () {
       this.isLoading = true
       this.$http
@@ -194,8 +210,10 @@ export default {
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err)
-          this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     addToCart (id, title, qty = 1) {
@@ -224,10 +242,31 @@ export default {
             title: `${err.response.data.message}`
           })
         })
+    },
+    toggleFavorite (id, title) {
+      const favoriteId = this.favoriteList.findIndex((item) => item === id)
+      if (favoriteId === -1) {
+        this.favoriteList.push(id)
+        emitter.emit('push-message', {
+          style: 'success',
+          title: `${title}已 加入我的最愛`
+        })
+      } else {
+        this.favoriteList.splice(favoriteId, 1)
+        emitter.emit('push-message', {
+          style: 'danger',
+          title: `${title}已 取消我的最愛`
+        })
+      }
+    },
+    getFavorite () {
+      const favoriteList = localStorage.getItem('Favorite') || '[]'
+      this.favoriteList = JSON.parse(favoriteList)
     }
   },
   mounted () {
     this.getProducts()
+    this.getFavorite()
   }
 }
 </script>

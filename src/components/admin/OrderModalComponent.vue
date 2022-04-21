@@ -11,13 +11,13 @@
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title" id="exampleModalLabel">
+          <h3 class="modal-title" id="exampleModalLabel">
             <span>訂單細節</span>
-          </h5>
+          </h3>
           <button
             type="button"
             class="btn-close"
-            @click="closeModal"
+            @click="hideModal"
             aria-label="Close"
           ></button>
         </div>
@@ -125,15 +125,16 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
-            @click="closeModal"
+            @click="hideModal"
           >
             取消
           </button>
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-paid', localOrder)"
+            @click="$emit('update-paid', localOrder,currentPage)"
           >
+            <!-- @click="updatePaid(localOrder)" -->
             修改付款狀態
           </button>
         </div>
@@ -143,10 +144,21 @@
 </template>
 
 <script>
-import { DateFn } from '@/libs/date'
+import { DateFn } from '@/libs/methods'
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
 export default {
-  props: ['tempOrder', 'currentPage'],
+  props: {
+    tempOrder: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    currentPage: {
+      type: Number
+    }
+  },
+  emits: ['update-paid'],
   mixins: [BootstrapModal],
   data () {
     return {
@@ -159,9 +171,6 @@ export default {
     }
   },
   methods: {
-    closeModal () {
-      this.modal.hide()
-    },
     DateFn
   }
 }

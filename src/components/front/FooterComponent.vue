@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-dark py-3 footer-letter-spacing position-relative">
+  <div class="bg-dark py-3 footer-letter-spacing position-relative mt-auto">
     <ul
       class="text-white mb-1 mb-md-0  w-100 list-unstyled d-grid justify-content-center text-start"
     >
@@ -33,7 +33,7 @@
         </a>
 
       </li>
-      <li class="mb-0">© 2022 Panada Nails 版權所有(非商業用).</li>
+      <li class="mb-0">© 2022 Panada Nails 版權所有(非商業用) |<span type="button" @click="$router.push('/login')"> 後臺登入</span></li>
     </ul>
   </div>
 </template>

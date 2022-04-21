@@ -7,9 +7,10 @@ import router from './router'
 import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
-import ZhTw from './zh_TW.js'
+import ZhTw from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import Loading from 'vue3-loading-overlay'
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
+import CKEditor from '@ckeditor/ckeditor5-vue'
 
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
@@ -24,9 +25,15 @@ setLocale('zh_TW')
 const app = createApp(App)
 app.use(router)
 app.use(VueAxios, axios)
+app.use(CKEditor)
 app.component('VLoading', Loading)
 app.component('VForm', Form)
 app.component('VField', Field)
 app.component('ErrorMessage', ErrorMessage)
 
 app.mount('#app')
+
+// 換頁後回到頁面的最頂端
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0)
+})

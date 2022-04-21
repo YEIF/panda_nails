@@ -1,102 +1,162 @@
 <template>
-  <!-- <h2>產品列表</h2> -->
   <VLoading :active="isLoading" :z-index="1060">
-    <LoadingComponent></LoadingComponent>
+    <LoadingComponent />
   </VLoading>
-  <div
-    class="position-relative d-flex align-items-center justify-content-center"
-    style="min-height: 350px"
-  >
-    <div
-      class="position-absolute"
-      style="
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-position: center center;
-        opacity: 0.3;
-      "
-      :style="{ backgroundImage: `url(${BannerImage})` }"
-    ></div>
-    <h2 class="fw-bold">產品頁面</h2>
-  </div>
-  <div class="container">
-    <ul class="row list-unstyled row-cols-1 row-cols-md-3 row-cols-lg-4 mt-4">
-      <li class="col" v-for="product in products" :key="product.id">
-        <div class="card mb-4">
-          <!-- <img :src="product.imageUrl" class="card-img-top card-img-scale" alt="..." /> -->
-          <div class="overflow-hidden">
-            <router-link :to="`/product/${product.id}`" class="">
-              <div
-                class="card-img-top card-img-scale"
-                style="
-                  height: 300px;
-                  background-size: cover;
-                  background-position: center;
-                "
-                :style="{ backgroundImage: `url(${product.imageUrl})` }"
-              ></div>
-            </router-link>
-          </div>
+  <HeaderBanner msg="產品頁面" />
 
-          <div class="card-body text-start">
-            <h5 class="card-title fs-4 fw-bold">
-              {{ product.title }}
-              <span
-                class="position-absolute start-85 translate-middle badge rounded-pill bg-success fs-7"
-              >
-                {{ product.category }}
-              </span>
-            </h5>
-            <div class="card-text d-flex justify-content-between">
-              <p class="fw-bold card-text text-danger fs-5 my-1 align-self-center">
-                NT ${{ product.price }} 元
-                <del class="m-start fs-6 small text-muted">
-                  {{ product.origin_price }} 元</del
-                >
-              </p>
-              <button
-                @click.prevent="addToCart(product.id, product.title)"
-                :disabled="isLoadingItem === product.id"
-                class="btn btn-outline-primary card-link text-decoration-none"
-              >
-                <i
-                  class="fas fa-spinner fa-pulse"
-                  v-if="isLoadingItem === product.id"
-                ></i
-                ><i class="bi bi-cart-plus fs-3"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+  <div class="container">
+    <ol class="breadcrumb mt-4">
+      <li class="breadcrumb-item">
+        <RouterLink to="/" class="nav-link active p-0"> 首頁 </RouterLink>
       </li>
-    </ul>
+      <li class="breadcrumb-item active" aria-current="page">產品頁面</li>
+    </ol>
+
+    <div class="row">
+      <!-- 手機板 -->
+      <div class="btn-group d-md-none" role="group">
+        <button
+          id="btnGroupDrop1"
+          type="button"
+          class="btn btn-primary dropdown-toggle mb-3"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ isActive ? isActive : '所有產品' }}
+        </button>
+        <ul
+          class="dropdown-menu p-3 text-center w-100 border-0"
+          aria-labelledby="btnGroupDrop1"
+        >
+          <li
+            class="list-group-item list-group-item-action"
+            aria-current="true"
+            @click="filterProducts()"
+            :class="{ active: isActive == '' }"
+          >
+            所有產品
+          </li>
+          <li
+            class="list-group-item list-group-item-action"
+            v-for="(Category, index) in MenuCategory"
+            :key="index"
+            @click="filterProducts(1, Category)"
+            :class="{ active: isActive == Category }"
+          >
+            {{ Category }}
+          </li>
+        </ul>
+      </div>
+      <!-- 桌面板 -->
+      <div class="col-md-3" role="button">
+        <ul class="list-group d-none d-md-block">
+          <li
+            class="list-group-item list-group-item-action"
+            aria-current="true"
+            @click="filterProducts()"
+            :class="{ active: isActive == '' }"
+          >
+            所有產品
+          </li>
+          <li
+            class="list-group-item list-group-item-action"
+            v-for="(Category, index) in MenuCategory"
+            :key="index"
+            @click="filterProducts(1, Category)"
+            :class="{ active: isActive == Category }"
+          >
+            {{ Category }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-9">
+        <ul class="row list-unstyled row-cols-1 row-cols-md-2 row-cols-lg-3">
+          <li class="col" v-for="product in products" :key="product.id">
+            <div class="card mb-4">
+              <div class="overflow-hidden">
+                <button
+                  type="button"
+                  class="btn btn-primary position-absolute fs-4 p-1"
+                  style="left: 20px; z-index: 1"
+                  @click="toggleFavorite(product.id, product.title)"
+                >
+                  <i
+                    :class="
+                      favoriteList.includes(product.id)
+                        ? 'bi-heart-fill'
+                        : 'bi-heart'
+                    "
+                  ></i>
+                </button>
+                <RouterLink :to="`/product/${product.id}`" class="">
+                  <div
+                    class="card-img-top card-img-scale"
+                    style="
+                      height: 300px;
+                      background-size: cover;
+                      background-position: center;
+                    "
+                    :style="{ backgroundImage: `url(${product.imageUrl})` }"
+                  ></div>
+                </RouterLink>
+              </div>
+
+              <div class="card-body text-start">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="card-title fs-4 fw-bold text-nowrap my-1">
+                    {{ product.title }}
+                  </h3>
+                  <span
+                    type="button"
+                    class="badge rounded-pill bg-success fs-7"
+                    @click="filterProducts(1,product.category)"
+                  >
+                    {{ product.category }}
+                  </span>
+                </div>
+
+                <div
+                  class="card-text d-flex justify-content-between align-items-center"
+                >
+                  <p class="fw-bold card-text text-danger fs-5 my-1">
+                    NT ${{ toThousandths(product.price) }} 元
+                    <del class="m-start fs-6 small text-muted">
+                      {{ toThousandths(product.origin_price) }} 元</del
+                    >
+                  </p>
+                  <button
+                    type="button"
+                    @click.prevent="addToCart(product.id, product.title)"
+                    :disabled="isLoadingItem === product.id"
+                    class="btn btn-outline-primary card-link text-decoration-none"
+                  >
+                    <i
+                      class="fas fa-spinner fa-pulse"
+                      v-if="isLoadingItem === product.id"
+                    ></i
+                    ><i class="bi bi-cart-plus fs-3"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div class="text-center">
-      <pagination-Component
-        :pages="pagination"
-        @change-pages="getProducts"
-      ></pagination-Component>
+      <PaginationComponent :pages="pagination" @change-pages="filterProducts" />
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-.card-img-scale:hover {
-  transform: scale(1.2);
-}
-.card-img-scale {
-  transform: scale(1);
-  transition: all 0.5s ease-out;
-}
-.start-85{
-  left: 85% !important;
-}
-</style>
+
 <script>
-import BannerImage from '@/assets/img/banner3.jpg'
+import HeaderBanner from '@/components/front/HeaderBanner.vue'
 import emitter from '@/libs/emitter'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
+import { toThousandths } from '@/libs/methods'
 export default {
   data () {
     return {
@@ -108,17 +168,52 @@ export default {
       },
       // VLoading
       isLoading: false,
-      BannerImage: BannerImage,
-      category: '流水畫'
+      favoriteList: [],
+      MenuCategory: [],
+      isActive: ''
     }
   },
   components: {
     PaginationComponent,
-    LoadingComponent
+    LoadingComponent,
+    HeaderBanner
   },
   methods: {
-    getProducts (page = 1, category = '') {
+    toThousandths,
+    getProducts () {
       this.isLoading = true
+      this.$http
+        .get(
+          `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products`
+        )
+        .then((res) => {
+          this.products = res.data.products
+          this.pagination = res.data.pagination
+          this.isLoading = false
+          this.products.filter(item => {
+            if (this.MenuCategory.indexOf(item.category) === -1) {
+              this.MenuCategory.push(item.category)
+            }
+            return this.MenuCategory
+          })
+          //  從商品tag來的
+          if (this.$route.params.category) {
+            const { category } = this.$route.params
+            this.filterProducts(1, category)
+          }
+        })
+        .catch((err) => {
+          console.dir(err)
+          this.isLoading = false
+        })
+    },
+    filterProducts (page = 1, category = '') {
+      this.isLoading = true
+      if (category === 'all') {
+        this.isActive = 'all'
+      } else {
+        this.isActive = category
+      }
       this.$http
         .get(
           `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}&category=${category}`
@@ -159,10 +254,53 @@ export default {
             title: `${err.response.data.message}`
           })
         })
+    },
+    toggleFavorite (id, title) {
+      const favoriteId = this.favoriteList.findIndex((item) => item === id)
+      if (favoriteId === -1) {
+        this.favoriteList.push(id)
+        emitter.emit('push-message', {
+          style: 'success',
+          title: `${title}已 加入我的最愛`
+        })
+      } else {
+        this.favoriteList.splice(favoriteId, 1)
+        emitter.emit('push-message', {
+          style: 'danger',
+          title: `${title}已 取消我的最愛`
+        })
+      }
+    },
+    getFavorite () {
+      const favoriteList = localStorage.getItem('Favorite') || '[]'
+      this.favoriteList = JSON.parse(favoriteList)
+    }
+  },
+  watch: {
+    favoriteList: {
+      handler () {
+        localStorage.setItem('Favorite', JSON.stringify(this.favoriteList))
+        emitter.emit('get-favorite-num')
+      },
+      deep: true
     }
   },
   mounted () {
     this.getProducts()
+    this.getFavorite()
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-img-scale:hover {
+  transform: scale(1.2);
+}
+.card-img-scale {
+  transform: scale(1);
+  transition: all 0.5s ease-out;
+}
+.start-85 {
+  left: 85% !important;
+}
+</style>

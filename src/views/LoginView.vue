@@ -2,24 +2,7 @@
   <VLoading :active="isLoading" :z-index="1060">
     <LoadingComponent />
   </VLoading>
-  <div
-    class="position-relative d-flex align-items-center justify-content-center"
-    style="min-height: 350px"
-  >
-    <div
-      class="position-absolute"
-      style="
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-position: center center;
-        opacity: 0.3;
-      "
-      :style="{ backgroundImage: `url(${BannerImage})` }"
-    ></div>
-    <h2 class="fw-bold">管理員登入</h2>
-  </div>
+  <HeaderBanner msg='管理員登入'/>
   <div class="container mt-5 mb-5">
     <div class="row">
       <img
@@ -51,13 +34,12 @@
                 required
                 autofocus
                 autocomplete="off"
-              >
-              </VField>
+              />
               <label for="email">Email address</label>
               <ErrorMessage
                 name="email"
                 class="invalid-feedback"
-              ></ErrorMessage>
+              />
             </div>
             <div class="form-floating">
               <VField
@@ -72,13 +54,12 @@
                 required
                 autofocus
                 autocomplete
-              >
-              </VField>
+              />
               <label for="password">Password</label>
               <ErrorMessage
                 name="password"
                 class="invalid-feedback"
-              ></ErrorMessage>
+              />
             </div>
             <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
               登入
@@ -89,24 +70,13 @@
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-// .form-signin {
-//   width: 100%;
-//   max-width: 330px;
-//   padding: 15px;
-//   margin: auto;
-// }
-.login-img {
-  height: 700px;
-  object-fit: cover;
-}
-</style>
+
 <script>
 import emitter from '@/libs/emitter'
 import LoadingComponent from '@/components/LoadingComponent.vue'
-import BannerImage from '@/assets/img/banner3.jpg'
+import HeaderBanner from '@/components/front/HeaderBanner.vue'
 export default {
-  components: { LoadingComponent },
+  components: { LoadingComponent, HeaderBanner },
   data () {
     return {
       form: {
@@ -115,15 +85,13 @@ export default {
           password: ''
         }
       },
-      isLoading: false,
-      BannerImage: BannerImage
+      isLoading: false
     }
   },
   methods: {
     login () {
       const url = `${process.env.VUE_APP_API}/admin/signin`
       this.isLoading = true
-      console.log(this.form.user.email, this.form.user.password)
       const data = {
         username: this.form.user.email,
         password: this.form.user.password
@@ -152,3 +120,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.login-img {
+  height: 700px;
+  object-fit: cover;
+}
+</style>

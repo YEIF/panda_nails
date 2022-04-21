@@ -28,6 +28,7 @@
                 <div class="mb-3">
                   <label for="imageUrl" class="form-label">輸入圖片網址</label>
                   <input
+                    id="imageUrl"
                     type="text"
                     class="form-control"
                     placeholder="請輸入圖片連結"
@@ -40,6 +41,7 @@
                   <label for="customFile" class="form-label"
                     >或 上傳圖片
                     <span
+                      id="customFile"
                       class="spinner-border"
                       style="width: 1rem; height: 1rem"
                       role="status"
@@ -66,8 +68,11 @@
                     :key="key"
                   >
                     <div class="mb-3">
-                      <label for="imageUrl" class="form-label">圖片網址</label>
+                      <label for="imageUrlArray" class="form-label"
+                        >圖片網址</label
+                      >
                       <input
+                        id="imageUrlArray"
                         v-model="localProduct.imagesUrl[key]"
                         type="text"
                         class="form-control"
@@ -83,6 +88,7 @@
                     "
                   >
                     <button
+                      type="button"
                       class="btn btn-outline-primary btn-sm d-block w-100"
                       @click="localProduct.imagesUrl.push('')"
                     >
@@ -91,6 +97,7 @@
                   </div>
                   <div v-else>
                     <button
+                      type="button"
                       class="btn btn-outline-danger btn-sm d-block w-100"
                       @click="localProduct.imagesUrl.pop()"
                     >
@@ -101,6 +108,7 @@
                 <!-- localProduct.imagesUrl 沒有值的時候 -->
                 <div v-else>
                   <button
+                    type="button"
                     class="btn btn-outline-primary btn-sm d-block w-100"
                     @click="createImagesUrl"
                   >
@@ -133,7 +141,7 @@
                   />
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="price" class="form-label">單位</label>
+                  <label for="unit" class="form-label">單位</label>
                   <input
                     id="unit"
                     type="text"
@@ -184,7 +192,7 @@
               <div class="mb-3">
                 <label for="content" class="form-label">說明內容</label>
                 <textarea
-                  id="description"
+                  id="content"
                   type="text"
                   class="form-control"
                   placeholder="請輸入說明內容"
@@ -216,28 +224,13 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
-            @click="closeModal"
+            @click="hideModal"
           >
             取消
           </button>
-          <template v-if="isNew">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="updateProduct"
-            >
-              新增
-            </button>
-          </template>
-          <template v-else>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="updateProduct"
-            >
-              更新
-            </button>
-          </template>
+          <button type="button" class="btn btn-primary" @click="updateProduct">
+            {{ isNew ? '新增' : '更新' }}
+          </button>
         </div>
       </div>
     </div>
@@ -247,13 +240,27 @@
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
 import emitter from '@/libs/emitter'
 export default {
-  props: ['tempProduct', 'isNew', 'currentPage'],
+  // props: ['tempProduct', 'isNew', 'currentPage'],
+  props: {
+    tempProduct: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    isNew: {
+      type: Boolean,
+      default: false
+    },
+    currentPage: {
+      type: Number
+    }
+  },
   emits: ['get-products', 'create-images-url'],
   mixins: [BootstrapModal],
   data () {
     return {
       localProduct: {},
-      modal: '',
       status: {},
       isLoading: false
     }
@@ -283,7 +290,7 @@ export default {
             title: `${typeMessage}成功`
           })
           this.$emit('get-products', method === 'put' ? this.currentPage : 1)
-          this.closeModal()
+          this.hideModal()
         })
         .catch((err) => {
           this.isLoading = false
@@ -294,9 +301,6 @@ export default {
           })
           console.dir(err)
         })
-    },
-    closeModal () {
-      this.modal.hide()
     },
     createImagesUrl () {
       this.$emit('create-images-url')
@@ -318,14 +322,13 @@ export default {
           if (res.data.success) {
             this.localProduct.imageUrl = res.data.imageUrl
             this.$refs.fileInput.value = ''
-            console.log(res)
+
             emitter.emit('push-message', {
               style: 'success',
               title: '圖片上傳成功'
             })
           } else {
             this.$refs.fileInput.value = ''
-            console.log(res)
             emitter.emit('push-message', {
               style: 'danger',
               title: '圖片上傳失敗',

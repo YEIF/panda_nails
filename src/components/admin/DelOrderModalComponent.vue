@@ -30,7 +30,7 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
-            @click="closeModal"
+            @click="hideModal"
           >
             取消
           </button>
@@ -47,7 +47,18 @@
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
 import emitter from '@/libs/emitter'
 export default {
-  props: ['tempOrder', 'currentPage'],
+  // props: ['tempOrder', 'currentPage'],
+  props: {
+    tempOrder: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    currentPage: {
+      type: Number
+    }
+  },
   emits: ['get-orders'],
   mixins: [BootstrapModal],
   data () {
@@ -57,7 +68,6 @@ export default {
   },
   methods: {
     delOrder () {
-      console.log(this.tempOrder)
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`
       this.$http
@@ -66,15 +76,12 @@ export default {
           this.isLoading = false
           emitter.emit('push-message', { style: 'success', title: this.tempOrder.id + '訂單' + res.data.message })
           this.$emit('get-orders', this.currentPage)
-          this.closeModal()
+          this.hideModal()
         })
         .catch((err) => {
           console.dir(err)
           this.isLoading = false
         })
-    },
-    closeModal () {
-      this.modal.hide()
     }
   }
 }

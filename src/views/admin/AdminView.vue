@@ -1,6 +1,7 @@
 <template>
   <div class="admin">
-    <h2>後台首頁</h2>
+    <img src="@/assets/img/panda_circle400.png" alt="">
+    <h2>歡迎進入Panda nails後台</h2>
   </div>
 </template>
 

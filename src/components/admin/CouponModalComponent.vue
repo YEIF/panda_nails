@@ -1,5 +1,5 @@
 <template>
-  <VLoading :active="isLoading" :z-index="1060"></VLoading>
+  <VLoading :active="isLoading" :z-index="1060" />
   <div
     class="modal fade"
     id="couponModal"
@@ -12,10 +12,10 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
+          <h3 class="modal-title" id="exampleModalLabel">
             <span v-if="isNew">新增優惠卷</span>
             <span v-else>編輯優惠卷</span>
-          </h5>
+          </h3>
           <button
             type="button"
             class="btn-close"
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="closeModal">
+          <button type="button" class="btn btn-secondary" @click="hideModal">
             Close
           </button>
           <button
@@ -103,7 +103,18 @@ import BootstrapModal from '@/libs/mixins/BootstrapModal'
 import emitter from '@/libs/emitter'
 export default {
   mixins: [BootstrapModal],
-  props: ['tempCoupon', 'isNew'],
+  props: {
+    tempCoupon: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    isNew: {
+      type: Boolean,
+      default: false
+    }
+  },
   emits: ['get-coupons'],
   data () {
     return {
@@ -138,22 +149,23 @@ export default {
 
       this.$http[methods](url, { data: this.localCoupon })
         .then((res) => {
-          // alert('更改優惠卷')
           this.isLoading = false
-          console.log(res)
-          emitter.emit('push-message', { style: 'success', title: `${typeMessage}${this.localCoupon.title}優惠卷` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${typeMessage}${this.localCoupon.title}優惠卷`
+          })
           this.$emit('get-coupons')
-          this.closeModal()
+          this.hideModal()
         })
         .catch((err) => {
           console.dir(err)
           this.isLoading = false
-          emitter.emit('push-message', { style: 'danger', title: `${typeMessage}${this.localCoupon.title}優惠卷`, content: `${err.response.data.message}` })
-          // this.$httpMessageState(error.response, '錯誤訊息')
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${typeMessage}${this.localCoupon.title}優惠卷`,
+            content: `${err.response.data.message}`
+          })
         })
-    },
-    closeModal () {
-      this.modal.hide()
     }
   }
 }

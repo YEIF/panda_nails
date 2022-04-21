@@ -2,7 +2,7 @@
   <div class="container">
     <VLoading :active="isLoading" :z-index="1060"></VLoading>
     <div class="text-end mt-4">
-      <button class="btn btn-primary" @click="openModal('new')">
+      <button type="button" class="btn btn-primary" @click="openModal('new')">
         建立新的產品
       </button>
     </div>
@@ -56,7 +56,7 @@
     <PaginationComponent
       :pages="pagination"
       @change-pages="getProducts"
-    ></PaginationComponent>
+    />
     <ProductModalComponent
       ref="productModal"
       :temp-product="tempProduct"
@@ -64,22 +64,20 @@
       :current-page="pagination.current_page"
       @get-products="getProducts"
       @create-images-url="createImagesUrl"
-    >
-    </ProductModalComponent>
+    />
     <DelProductModalComponent
       :temp-product="tempProduct"
       :current-page="pagination.current_page"
       @get-products="getProducts"
       ref="delProductModal"
-    >
-    </DelProductModalComponent>
+    />
   </div>
 </template>
 
 <script>
 import PaginationComponent from '@/components/PaginationComponent'
-import ProductModalComponent from '@/components/ProductModalComponent.vue'
-import DelProductModalComponent from '@/components/DelProductModalComponent'
+import ProductModalComponent from '@/components/admin/ProductModalComponent.vue'
+import DelProductModalComponent from '@/components/admin/DelProductModalComponent'
 export default {
   components: {
     PaginationComponent,

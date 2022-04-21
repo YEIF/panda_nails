@@ -42,7 +42,7 @@
             </button>
           </li>
 
-          <div v-if="carts.carts?.length > 0">
+          <div v-if="carts.carts?.length > 0" style="max-height: 500px;overflow-y: auto;">
             <li
               class="card border-0 p-3"
               v-for="cart in carts.carts"
@@ -80,50 +80,6 @@
                 </div>
               </div>
             </li>
-
-            <li class="input-group mb-3 pt-3 border-top">
-              <input
-                type="text"
-                class="form-control p-2"
-                placeholder="已套用優惠券"
-                disabled
-                v-if="isCoupon"
-              />
-              <input
-                type="text"
-                class="form-control p-2"
-                placeholder="輸入優惠碼"
-                v-model="code"
-                v-else
-              /><button
-                type="button"
-                class="btn btn-primary px-3"
-                :disabled="isCoupon"
-                @click="useCoupon(code)"
-              >
-                套用優惠券
-                <div class="loading d-none fade"></div>
-              </button>
-            </li>
-            <li
-              class="border-0 d-flex justify-content-between fs-4"
-              v-if="!isCoupon"
-            >
-              <p class="p-1">總計</p>
-              <p class="p-1">NT${{ toThousandths(carts.final_total) }}</p>
-            </li>
-            <li class="border-0 fs-4" v-else>
-              <small class="fs-5 d-flex justify-content-between">
-                <p class="p-1">總計</p>
-                <del class="p-1">NT${{ toThousandths(carts.total) }}</del>
-              </small>
-              <div class="d-flex justify-content-between">
-                <p class="p-1">折扣後金額：</p>
-                <span class="fs-4"
-                  >$ {{ toThousandths(carts.final_total) }} NTD</span
-                >
-              </div>
-            </li>
           </div>
 
           <div v-else>
@@ -133,6 +89,51 @@
               >挑選商品
             </RouterLink>
           </div>
+        </ul>
+        <ul v-if="carts.carts?.length > 0" class="list-unstyled">
+          <li class="input-group mb-3 pt-3 border-top">
+            <input
+              type="text"
+              class="form-control p-2"
+              placeholder="已套用優惠券"
+              disabled
+              v-if="isCoupon"
+            />
+            <input
+              type="text"
+              class="form-control p-2"
+              placeholder="輸入優惠碼"
+              v-model="code"
+              v-else
+            /><button
+              type="button"
+              class="btn btn-primary px-3"
+              :disabled="isCoupon"
+              @click="useCoupon(code)"
+            >
+              套用優惠券
+              <div class="loading d-none fade"></div>
+            </button>
+          </li>
+          <li
+            class="border-0 d-flex justify-content-between fs-4"
+            v-if="!isCoupon"
+          >
+            <p class="p-1">總計</p>
+            <p class="p-1">NT${{ toThousandths(carts.final_total) }}</p>
+          </li>
+          <li class="border-0 fs-4" v-else>
+            <small class="fs-5 d-flex justify-content-between">
+              <p class="p-1">總計</p>
+              <del class="p-1">NT${{ toThousandths(carts.total) }}</del>
+            </small>
+            <div class="d-flex justify-content-between">
+              <p class="p-1">折扣後金額：</p>
+              <span class="fs-4"
+                >$ {{ toThousandths(carts.final_total) }} NTD</span
+              >
+            </div>
+          </li>
         </ul>
       </div>
 

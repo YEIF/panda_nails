@@ -53,11 +53,12 @@ export default {
   },
   methods: {
     Subscription () {
-      this.subscribeMail = ''
       emitter.emit('push-message', {
         style: 'success',
-        title: '訂閱成功！\n有最新消息會寄到信箱中\n可前往信箱查看唷～'
+        title: ` ${this.subscribeMail} 訂閱成功`,
+        content: '有最新消息會寄到信箱中，可前往信箱查看唷~'
       })
+      this.subscribeMail = ''
     }
   }
 }

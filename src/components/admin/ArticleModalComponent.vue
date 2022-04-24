@@ -177,9 +177,6 @@ export default {
   emits: ['get-articles'],
   data () {
     return {
-      // localArticle: {},
-      // due_date: '',
-      // create_at: '',
       status: {},
       modal: '',
       isLoading: false,
@@ -196,7 +193,6 @@ export default {
   },
   watch: {
     tempArticle () {
-      // this.localArticle = this.tempArticle
       this.localArticle = {
         ...this.tempArticle,
         tag: this.tempArticle.tag || []

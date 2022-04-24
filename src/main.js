@@ -11,6 +11,17 @@ import ZhTw from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import Loading from 'vue3-loading-overlay'
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 import CKEditor from '@ckeditor/ckeditor5-vue'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+
+// aos
+AOS.init({
+  offset: 350,
+  duration: 1000,
+  easing: 'ease-in-out',
+  anchorPlacement: 'top-bottom'
+  // once: true,
+})
 
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])

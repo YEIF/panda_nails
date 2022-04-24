@@ -74,13 +74,19 @@ export default {
         .delete(url)
         .then((res) => {
           this.isLoading = false
-          emitter.emit('push-message', { style: 'success', title: this.tempOrder.id + '訂單' + res.data.message })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: this.tempOrder.id + '訂單' + res.data.message
+          })
           this.$emit('get-orders', this.currentPage)
           this.hideModal()
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   }

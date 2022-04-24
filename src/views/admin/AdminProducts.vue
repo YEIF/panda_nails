@@ -53,10 +53,7 @@
     <!-- 分頁 -->
     <!-- 內 pages,外 pagination -->
     <!-- 內 get-product, 外 getProduct -->
-    <PaginationComponent
-      :pages="pagination"
-      @change-pages="getProducts"
-    />
+    <PaginationComponent :pages="pagination" @change-pages="getProducts" />
     <ProductModalComponent
       ref="productModal"
       :temp-product="tempProduct"
@@ -78,6 +75,7 @@
 import PaginationComponent from '@/components/PaginationComponent'
 import ProductModalComponent from '@/components/admin/ProductModalComponent.vue'
 import DelProductModalComponent from '@/components/admin/DelProductModalComponent'
+import emitter from '@/libs/emitter'
 export default {
   components: {
     PaginationComponent,
@@ -130,8 +128,11 @@ export default {
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err.data)
           this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     createImagesUrl () {

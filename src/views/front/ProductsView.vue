@@ -49,7 +49,7 @@
       </div>
       <!-- 桌面板 -->
       <div class="col-md-3" role="button">
-        <ul class="list-group d-none d-md-block">
+        <ul class="list-group d-none d-md-block sticky-md-top">
           <li
             class="list-group-item list-group-item-action"
             aria-current="true"
@@ -72,7 +72,7 @@
 
       <div class="col-md-9">
         <ul class="row list-unstyled row-cols-1 row-cols-md-2 row-cols-lg-3">
-          <li class="col" v-for="product in products" :key="product.id">
+          <li class="col" v-for="product in products" :key="product.id"  data-aos="fade-up">
             <div class="card mb-4">
               <div class="overflow-hidden">
                 <button
@@ -110,7 +110,7 @@
                   <span
                     type="button"
                     class="badge rounded-pill bg-success fs-7"
-                    @click="filterProducts(1,product.category)"
+                    @click="filterProducts(1, product.category)"
                   >
                     {{ product.category }}
                   </span>
@@ -190,7 +190,7 @@ export default {
           this.products = res.data.products
           this.pagination = res.data.pagination
           this.isLoading = false
-          this.products.filter(item => {
+          this.products.filter((item) => {
             if (this.MenuCategory.indexOf(item.category) === -1) {
               this.MenuCategory.push(item.category)
             }
@@ -203,8 +203,11 @@ export default {
           }
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     filterProducts (page = 1, category = '') {
@@ -222,10 +225,15 @@ export default {
           this.products = res.data.products
           this.pagination = res.data.pagination
           this.isLoading = false
+          // 點擊列表 or 換頁回到最上方
+          window.scrollTo(0, 0)
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     addToCart (id, title, qty = 1) {
@@ -247,7 +255,6 @@ export default {
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoadingItem = ''
           emitter.emit('push-message', {
             style: 'danger',
@@ -302,5 +309,8 @@ export default {
 }
 .start-85 {
   left: 85% !important;
+}
+.sticky-md-top{
+ top:106px;
 }
 </style>

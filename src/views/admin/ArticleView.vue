@@ -134,7 +134,6 @@ export default {
           this.$refs.articleModal.openModal()
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',

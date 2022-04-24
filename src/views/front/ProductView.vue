@@ -4,7 +4,12 @@
   </VLoading>
   <HeaderBanner :msg="product.title" />
   <!-- 資料確定進來後才顯示，否則 toThousandths  會 undefined -->
-  <div class="container my-5" v-if="Object.keys(product).length > 0">
+  <div
+    class="container my-5"
+    v-if="Object.keys(product).length > 0"
+    data-aos="fade-up"
+    data-aos-offset="100"
+  >
     <div class="row row-cols-1 row-cols-md-2">
       <div class="col">
         <div
@@ -53,7 +58,7 @@
           </div>
           <div class="fw-bold text-end text-danger fs-3 mt-4">
             <del class="text-end fs-6 small text-muted d-block">
-             原價 : {{ toThousandths(product.origin_price) }} 元</del
+              原價 : {{ toThousandths(product.origin_price) }} 元</del
             >
             NT ${{ toThousandths(product.price) }} 元
           </div>
@@ -90,8 +95,8 @@
         </div>
       </div>
     </div>
-    <div v-if="products.length>0">
-      <h2 class="my-5 ">為您推薦</h2>
+    <div v-if="products.length > 0">
+      <h2 class="my-5" data-aos="fade-up" data-aos-offset="100">為您推薦</h2>
       <swiper
         :modules="modules"
         Navigation
@@ -117,7 +122,7 @@
           pauseOnMouseEnter: true
         }"
       >
-        <SwiperSlide v-for="product in products" :key="product.id">
+        <SwiperSlide v-for="product in products" :key="product.id" >
           <div class="overflow-hidden">
             <button
               type="button"

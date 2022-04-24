@@ -109,7 +109,6 @@ export default {
           this.$router.push('/admin/products')
         })
         .catch((err) => {
-          console.dir(err)
           emitter.emit('push-message', {
             style: 'danger',
             title: `${err.response.data.message}`

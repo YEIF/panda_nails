@@ -23,6 +23,9 @@
             <RouterLink class="nav-link" to="/blog">部落格</RouterLink>
           </li>
           <li class="nav-item px-2">
+            <RouterLink class="nav-link" to="/question">常見問題</RouterLink>
+          </li>
+          <li class="nav-item px-2">
             <RouterLink class="nav-link" to="/OrderTracking"
               >訂單查詢</RouterLink
             >
@@ -90,7 +93,10 @@ export default {
           this.carts = res.data.data
         })
         .catch((err) => {
-          console.dir(err)
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     getFavorite () {
@@ -141,7 +147,7 @@ body {
   }
 }
 .offcanvas-end {
-  width:450px;
+  width: 450px;
   @media only screen and (max-width: 600px) {
     width: 600px;
   }

@@ -42,6 +42,16 @@ const routes = [
         component: () => import('../views/front/CheckoutView.vue')
       },
       {
+        path: 'checkout/:id',
+        meta: { title: '付款頁面 | Panda_Nails' },
+        component: () => import('../views/front/PayView.vue')
+      },
+      {
+        path: 'question',
+        meta: { title: '常見問題 | Panda_Nails' },
+        component: () => import('../views/front/QuestionView.vue')
+      },
+      {
         path: 'favorite',
         meta: { title: '收藏頁面 | Panda_Nails' },
         component: () => import('../views/front/FavoriteView.vue')

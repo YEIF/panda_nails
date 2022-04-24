@@ -30,7 +30,7 @@
                 <img
                   :src="cart.product.imageUrl"
                   class="img-fluid"
-                  style="object-fit: contain"
+                  style="object-fit: cover; min-height:100% ;object-position: center;"
                   alt="cart.product.title"
                 />
               </div>

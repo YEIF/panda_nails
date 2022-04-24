@@ -28,7 +28,7 @@
                 </li>
               </ul>
             </td>
-            <td class="text-right">{{ order.total }}</td>
+            <td class="text-right">{{ Math.round(order.total) }}</td>
             <td>
               <div class="form-check form-switch">
                 <input
@@ -114,7 +114,10 @@ export default {
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err)
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     DateFn,
@@ -145,7 +148,6 @@ export default {
           })
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',

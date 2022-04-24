@@ -69,6 +69,7 @@
 import { DateFn } from '@/libs/methods'
 import CouponModalComponent from '@/components/admin/CouponModalComponent.vue'
 import DelCouponModalComponent from '@/components/admin/DelCouponModalComponent.vue'
+import emitter from '@/libs/emitter'
 export default {
   components: {
     CouponModalComponent,
@@ -98,8 +99,10 @@ export default {
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err)
-          this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     DateFn,

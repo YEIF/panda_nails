@@ -232,14 +232,12 @@ export default {
           this.hideModal()
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',
             title: `${typeMessage}${this.localArticle.title}優惠卷`,
             content: `${err.response.data.message}`
           })
-          // this.$httpMessageState(error.response, '錯誤訊息')
         })
     }
   }

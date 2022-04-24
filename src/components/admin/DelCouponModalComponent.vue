@@ -79,7 +79,10 @@ export default {
         })
         .catch((err) => {
           this.isLoading = false
-          console.dir(err)
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   }

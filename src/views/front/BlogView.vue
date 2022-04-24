@@ -34,12 +34,12 @@
 
     <div class="row justify-content-center my-5">
       <div
-        class="blog p-0 d-flex position-relative col-12 col-md-8 mb-5 text-start overflow-hidden"
+        class="blog p-0 d-flex position-relative col-12 col-md-8 mb-5 text-start overflow-hidden" data-aos="fade-up"
         v-for="article in filterArticles"
         :key="article.id"
         @click="getArticle(article.id)"
       >
-        <div class="blog_img overflow-hidden align-self-center">
+        <div class="blog_img overflow-hidden align-self-center" >
           <img
             :src="article.imageUrl"
             :alt="article.title"

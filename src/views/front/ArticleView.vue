@@ -17,8 +17,11 @@
         {{ article.title }}
       </li>
     </ol>
-
-    <div class="row justify-content-center my-5">
+    <!-- 渲染完再載入，不然會看到Invalid-->
+    <div
+      class="row justify-content-center my-5"
+      v-if="Object.keys(article).length > 0"
+    >
       <div class="text-center border position-relative py-5 py-md-7 mb-5">
         <p class="small">{{ DateFn(article.create_at) }}</p>
         <h3 class="fw-bold text-primary mb-3">
@@ -39,9 +42,7 @@
           <div class="art_img text-center mb-5">
             <img class="" :src="article.imageUrl" :alt="article.title" />
           </div>
-          <div class="text-justify" ref="content">
-
-          </div>
+          <div class="text-justify" ref="content"></div>
         </div>
       </div>
     </div>
@@ -59,7 +60,6 @@ export default {
       isLoading: false,
       title: '周年慶',
       article: {}
-
     }
   },
   watch: {
@@ -85,7 +85,6 @@ export default {
           document.title = `${this.article.title} | Panda_Nails`
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',

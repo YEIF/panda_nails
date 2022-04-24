@@ -158,7 +158,6 @@ export default {
           this.hideModal()
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',

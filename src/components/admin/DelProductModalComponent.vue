@@ -78,9 +78,11 @@ export default {
           emitter.emit('push-message', { style: 'success', title: '刪除商品成功' })
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoading = false
-          emitter.emit('push-message', { style: 'danger', title: '刪除商品失敗' })
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   }

@@ -17,7 +17,7 @@
       class="row list-unstyled row-cols-1 row-cols-md-3 row-cols-lg-4 mt-4"
       v-if="favoriteList?.length > 0"
     >
-      <li class="col" v-for="product in filterProducts" :key="product.id">
+      <li class="col" v-for="product in filterProducts" :key="product.id" data-aos="fade-up">
         <div class="card mb-4">
           <!-- <img :src="product.imageUrl" class="card-img-top card-img-scale" alt="..." /> -->
           <div class="overflow-hidden">
@@ -132,8 +132,10 @@ export default {
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err)
-          this.isLoading = false
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     },
     addToCart (id, title, qty = 1) {
@@ -155,7 +157,6 @@ export default {
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoadingItem = ''
           emitter.emit('push-message', {
             style: 'danger',
@@ -182,12 +183,6 @@ export default {
     getFavorite () {
       const favoriteList = localStorage.getItem('Favorite') || '[]'
       this.favoriteList = JSON.parse(favoriteList)
-    },
-    getFilters () {
-      const FiltersData = this.products.filter((item) =>
-        this.favoriteList.includes(item.id)
-      )
-      console.log(FiltersData)
     }
   },
   watch: {
@@ -207,7 +202,6 @@ export default {
   mounted () {
     this.getFavorite()
     this.getProducts()
-    this.getFilters()
   }
 }
 </script>

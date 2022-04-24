@@ -27,7 +27,7 @@
               class="form-control"
               placeholder="請輸入 訂單編號"
               name="訂單編號"
-              aria-describedby="search-button"
+              :disabled="searchType"
               v-model="orderId"
               :class="{ 'is-invalid': errors['訂單編號'] }"
               rules="required"
@@ -36,6 +36,7 @@
             <button
               type="submit"
               class="input-group-text btn btn-primary"
+              :disabled="Object.keys(errors).length > 0 || searchType || orderId===''"
               id="search-button"
             >
               <i class="bi bi-search"></i>
@@ -48,7 +49,7 @@
         </div>
       </div>
       <!-- 訂單資訊 -->
-      <div class="col-md-9 mt-5" v-if="order">
+      <div class="col-md-9 mt-5" v-if="order" data-aos="fade-up" data-aos-offset="100">
         <div class="card">
           <div class="card-header" ref="order">訂單資訊</div>
 
@@ -72,7 +73,6 @@
               <div
                 class="accordion-collapse collapse"
                 aria-labelledby="headingTwo"
-                style=""
                 ref="accordionCollapse"
               >
                 <ul class="accordion-body list-unstyled" ref="collapseUl">
@@ -115,7 +115,7 @@
               </div>
             </div>
 
-            <table class="table table-hover mt-5">
+            <table class="table table-hover mt-5" >
               <tbody>
                 <tr>
                   <td scope="row" class="fw-bold" width="30%">訂單編號</td>
@@ -154,7 +154,7 @@
                 </tr>
                 <tr>
                   <td scope="row" class="fw-bold" width="30%">收件地址</td>
-                  <td>aaa</td>
+                  <td>{{order.user.address}}</td>
                 </tr>
                 <tr>
                   <td scope="row" class="fw-bold" width="30%">備註</td>
@@ -169,7 +169,7 @@
                   </tr>
                   <tr>
                     <td scope="row" class="fw-bold align-middle">折扣後金額</td>
-                    <td class="text-danger">NT$ {{ order.total }}</td>
+                    <td class="text-danger">NT$ {{ Math.round(order.total) }}</td>
                   </tr>
                 </template>
                 <template v-else>
@@ -198,6 +198,7 @@ export default {
     return {
       // VLoading
       isLoading: false,
+      searchType: false,
       orderId: '',
       order: '',
       isCoupon: { type: false },
@@ -223,6 +224,7 @@ export default {
     },
     searchOrder () {
       this.isLoading = true
+      this.searchType = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order/${this.orderId}`
       this.$http
         .get(url)
@@ -255,6 +257,7 @@ export default {
             this.$refs.form.resetForm()
           }
           this.isLoading = false
+          this.searchType = false
         })
         .catch((err) => {
           this.isLoading = false
@@ -268,6 +271,7 @@ export default {
   watch: {
     order () {
       this.$nextTick(() => {
+        // 當畫面渲染完才註冊 Collapse元件
         if (this.$refs.accordionCollapse !== undefined) {
           const { accordionButton, accordionCollapse } = this.$refs
           this.accordionButton = accordionButton

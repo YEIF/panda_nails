@@ -52,7 +52,16 @@
                 <tbody>
                   <tr>
                     <th style="width: 100px">訂單編號</th>
-                    <td>{{ localOrder.id }}</td>
+                    <td>
+                      {{ localOrder.id }}
+                      <span
+                        class="ms-3"
+                        type="button"
+                        @click="copyOrderId(localOrder.id)"
+                      >
+                        <i class="far fa-copy"></i>
+                      </span>
+                    </td>
                   </tr>
                   <tr>
                     <th>下單時間</th>
@@ -79,7 +88,7 @@
                   <tr>
                     <th>總金額</th>
                     <td>
-                      {{ localOrder.total }}
+                      {{ Math.round(localOrder.total) }}
                       <!-- {{ $filters.currency(localOrder.total) }} -->
                     </td>
                   </tr>
@@ -97,7 +106,7 @@
                     </th>
                     <td>{{ order.qty }} / {{ order.product.unit }}</td>
                     <td class="text-end">
-                      {{ order.final_total }}
+                      {{ Math.round(order.final_total) }}
                       <!-- {{ $filters.currency(order.final_total) }} -->
                     </td>
                   </tr>
@@ -132,7 +141,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-paid', localOrder,currentPage)"
+            @click="$emit('update-paid', localOrder, currentPage)"
           >
             <!-- @click="updatePaid(localOrder)" -->
             修改付款狀態
@@ -146,6 +155,7 @@
 <script>
 import { DateFn } from '@/libs/methods'
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
+import emitter from '@/libs/emitter'
 export default {
   props: {
     tempOrder: {
@@ -171,7 +181,16 @@ export default {
     }
   },
   methods: {
-    DateFn
+    DateFn,
+    copyOrderId (id) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(id)
+        emitter.emit('push-message', {
+          style: 'success',
+          title: `${id}\n已複製到剪貼簿`
+        })
+      }
+    }
   }
 }
 </script>

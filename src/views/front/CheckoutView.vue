@@ -4,32 +4,7 @@
     <LoadingComponent />
   </VLoading>
   <div class="container mt-5">
-    <ul class="list d-flex justify-content-center list-unstyled">
-      <li
-        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
-        :class="{ active: stepStatus.createOrder }"
-      >
-        <i class="bi bi-card-checklist fs-2"></i>
-        <p class="mb-0 mb-lg-3">Step 1 .</p>
-        <p>填寫資訊</p>
-      </li>
-      <li
-        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
-        :class="{ active: stepStatus.payCheck }"
-      >
-        <i class="bi bi-credit-card fs-2"></i>
-        <p class="mb-0 mb-lg-3">Step 2 .</p>
-        <p>確認付款</p>
-      </li>
-      <li
-        class="rounded-circle d-flex flex-column justify-content-center text-nowrap"
-        :class="{ active: stepStatus.success }"
-      >
-        <i class="bi bi-cart-check fs-2"></i>
-        <p class="mb-0 mb-lg-3">Step 3 .</p>
-        <p>訂單完成</p>
-      </li>
-    </ul>
+    <StepStatusComponent :step-status="stepStatus" />
     <!-- step1 -->
     <div class="row mt-5" v-if="stepStatus.createOrder">
       <div class="col-lg-4">
@@ -42,7 +17,10 @@
             </button>
           </li>
 
-          <div v-if="carts.carts?.length > 0" style="max-height: 500px;overflow-y: auto;">
+          <div
+            v-if="carts.carts?.length > 0"
+            style="max-height: 500px; overflow-y: auto"
+          >
             <li
               class="card border-0 p-3"
               v-for="cart in carts.carts"
@@ -130,7 +108,7 @@
             <div class="d-flex justify-content-between">
               <p class="p-1">折扣後金額：</p>
               <span class="fs-4"
-                >$ {{ toThousandths(carts.final_total) }} NTD</span
+                >$ {{ toThousandths(Math.round(carts.final_total)) }} NTD</span
               >
             </div>
           </li>
@@ -237,283 +215,19 @@
         </VForm>
       </div>
     </div>
-
-    <!-- step2 -->
-    <div class="row mt-5" v-if="stepStatus.payCheck">
-      <div class="col-lg-4">
-        <ul class="list-unstyled">
-          <li class="border-bottom h4 text-start">
-            <div>確認訂單明細</div>
-          </li>
-          <li
-            class="card border-0 p-3"
-            v-for="cart in carts.carts"
-            :key="cart.id + '123'"
-          >
-            <div class="row g-0">
-              <div class="col-4 col-md-3 col-lg-4">
-                <img
-                  :src="cart.product.imageUrl"
-                  class="img-fluid"
-                  style="object-fit: contain"
-                  alt="cart.product.title"
-                />
-              </div>
-              <div
-                class="col-8 col-md-9 col-lg-8 g-3 d-flex flex-column g-3 justify-content-between"
-              >
-                <div class="card-body p-1">
-                  <p class="card-title fs-5 text-start">
-                    {{ cart.product.title }}
-                  </p>
-                  <p class="text-start mb-0">
-                    <small class="text-muted"
-                      >NT${{ toThousandths(cart.product.price) }} /
-                      {{ cart.product.unit }}
-                    </small>
-                  </p>
-                  <p class="mb-0 text-end fs-4">
-                    NT${{ toThousandths(cart.qty * cart.product.price) }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="input-group mb-3 pt-3 border-top">
-            <input
-              type="text"
-              class="form-control p-2"
-              placeholder="已套用優惠券"
-              disabled
-              v-if="isCoupon"
-            /><button
-              type="button"
-              class="btn btn-primary px-3"
-              :disabled="isCoupon"
-              v-if="isCoupon"
-            >
-              套用優惠券
-              <div class="loading d-none fade"></div>
-            </button>
-          </li>
-          <li
-            class="border-0 d-flex justify-content-between fs-4"
-            v-if="!isCoupon"
-          >
-            <p class="p-1">總計</p>
-            <p class="p-1">NT${{ toThousandths(carts.final_total) }}</p>
-          </li>
-          <li class="border-0 fs-4" v-else>
-            <small class="fs-5 d-flex justify-content-between">
-              <p class="p-1">總計</p>
-              <del class="p-1">NT${{ toThousandths(carts.total) }}</del>
-            </small>
-            <div class="d-flex justify-content-between">
-              <p class="p-1">折扣後金額：</p>
-              <span class="fs-4"
-                >$ {{ toThousandths(carts.final_total) }} NTD</span
-              >
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="col-lg-8 justify-content-center text-start border">
-        <div class="text-start h2 border-bottom-0">訂購人資訊</div>
-        <div class="mb-3">
-          <div class="mb-2">Email</div>
-          <p class="h5">{{ form.user.email }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-2">收件人姓名</div>
-          <p class="h5">{{ form.user.name }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-2">收件人電話</div>
-          <p class="h5">{{ form.user.tel }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-2">收件人地址</div>
-          <p class="h5">{{ form.user.address }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-2">留言</div>
-          <p class="h5">{{ form.user.message }}</p>
-        </div>
-        <div class="d-flex justify-content-between border-top">
-          <div class="text-start">
-            <button
-              type="button"
-              class="btn btn-outline-dark"
-              @click="createOrder"
-            >
-              上一步
-            </button>
-          </div>
-          <div class="text-end">
-            <button type="button" class="btn btn-primary" @click="payCheck">
-              確認付款
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- step3 -->
-    <div class="row mt-5" v-if="stepStatus.success">
-      <div class="col-lg-4">
-        <ul class="list-unstyled">
-          <li class="border-bottom h4 text-start">
-            <div>訂單內容 <span class="text-success">(已付款)</span></div>
-          </li>
-          <li
-            class="card border-0 p-3"
-            v-for="cart in carts.carts"
-            :key="cart.id + '123'"
-          >
-            <div class="row g-0">
-              <div class="col-4 col-md-3 col-lg-4">
-                <img
-                  :src="cart.product.imageUrl"
-                  class="img-fluid"
-                  style="object-fit: contain"
-                  alt="cart.product.title"
-                />
-              </div>
-              <div
-                class="col-8 col-md-9 col-lg-8 g-3 d-flex flex-column g-3 justify-content-between"
-              >
-                <div class="card-body p-1">
-                  <p class="card-title fs-5 text-start">
-                    {{ cart.product.title }}
-                  </p>
-                  <p class="text-start mb-0">
-                    <small class="text-muted"
-                      >NT${{ toThousandths(cart.product.price) }} /
-                      {{ cart.product.unit }}
-                    </small>
-                  </p>
-                  <p class="mb-0 text-end fs-4">
-                    NT${{ toThousandths(cart.qty * cart.product.price) }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="input-group mb-3 pt-3 border-top">
-            <input
-              type="text"
-              class="form-control p-2"
-              placeholder="已套用優惠券"
-              disabled
-              v-if="isCoupon"
-            />
-            <button
-              type="button"
-              class="btn btn-primary px-3"
-              :disabled="isCoupon"
-              @click="useCoupon(code)"
-              v-if="isCoupon"
-            >
-              套用優惠券
-              <div class="loading d-none fade"></div>
-            </button>
-          </li>
-          <li
-            class="border-0 d-flex justify-content-between fs-4"
-            v-if="!isCoupon"
-          >
-            <p class="p-1">總計</p>
-            <p class="p-1">NT${{ toThousandths(carts.final_total) }}</p>
-          </li>
-          <li class="border-0 fs-4" v-else>
-            <small class="fs-5 d-flex justify-content-between">
-              <p class="p-1">總計</p>
-              <del class="p-1">NT${{ toThousandths(carts.total) }}</del>
-            </small>
-            <div class="d-flex justify-content-between">
-              <p class="p-1">折扣後金額：</p>
-              <span class="fs-4"
-                >$ {{ toThousandths(carts.final_total) }} NTD</span
-              >
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="col-lg-8 justify-content-center text-start border">
-        <div class="text-start h2 border-bottom-0">訂購資訊</div>
-        <div class="mb-3">
-          <div for="訂單金額" class="mb-3">訂單金額</div>
-          <p class="h5 text-success">
-            {{ order.total }}
-          </p>
-        </div>
-        <div class="mb-3">
-          <div class="mb-3">訂單編號</div>
-          <p class="h5">
-            <!-- {{ order.orderId }} -->
-            <input
-              type="text"
-              class="border-0"
-              :value="order.orderId"
-              ref="idInput"
-              readonly
-            />
-            <span
-              class="ms-3"
-              type="button"
-              @click="copyOrderId(order.orderId)"
-            >
-              <i class="far fa-copy"></i>
-            </span>
-          </p>
-        </div>
-        <div class="mb-3">
-          <div class="mb-3">訂購時間</div>
-          <p class="h5">{{ DateFn(order.create_at) }}</p>
-        </div>
-        <div class="mb-3" v-if="code">
-          <div class="mb-3">優惠卷代碼</div>
-          <p class="h5">{{ code }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人姓名</div>
-          <p class="h5">{{ form.user.name }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人電話</div>
-          <p class="h5">{{ form.user.tel }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人地址</div>
-          <p class="h5">{{ form.user.address }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">留言</div>
-          <p class="h5">{{ form.user.message }}</p>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import emitter from '@/libs/emitter'
 import LoadingComponent from '@/components/LoadingComponent.vue'
+import StepStatusComponent from '@/components/front/StepStatusComponent.vue'
 import { DateFn, toThousandths } from '@/libs/methods'
 
 export default {
   components: {
-    LoadingComponent
+    LoadingComponent,
+    StepStatusComponent
   },
   data () {
     return {
@@ -550,10 +264,12 @@ export default {
         emitter.emit('push-message', {
           style: 'info',
           title: '購物車無商品',
-          content: '購物車沒東西了，為您導向產品頁面'
+          content: '購物車沒東西了～\n頁面即將跳轉回商店'
         })
-        emitter.emit('emit-close-offcanvas')
-        this.$router.push('/products')
+        setTimeout(() => {
+          emitter.emit('emit-close-offcanvas')
+          this.$router.push('/products')
+        }, 1500)
       }
     }
   },
@@ -615,6 +331,7 @@ export default {
           })
           this.order = res.data
           emitter.emit('get-cart-num')
+          this.$router.push(`/checkout/${this.order.orderId}`)
         })
         .catch((err) => {
           this.isLoading = false
@@ -629,33 +346,6 @@ export default {
       this.stepStatus.payCheck = true
       this.sendOrder()
     },
-    payCheck () {
-      this.stepStatus.payCheck = false
-      this.stepStatus.success = true
-      this.payOrder()
-    },
-    payOrder () {
-      this.isLoading = true
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/pay/${this.order.orderId}`
-      this.$http
-        .post(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.isLoading = false
-            emitter.emit('push-message', {
-              style: 'success',
-              title: `${res.data.message}`
-            })
-          }
-        })
-        .catch((err) => {
-          this.isLoading = false
-          emitter.emit('push-message', {
-            style: 'success',
-            title: `${err.response.data.message}`
-          })
-        })
-    },
     isPhone (value) {
       const phoneNumber = /^(09)[0-9]{8}$/
       return phoneNumber.test(value)
@@ -664,14 +354,6 @@ export default {
     },
     openOffcanvas () {
       emitter.emit('emit-open-offcanvas')
-    },
-    copyOrderId (id) {
-      this.$refs.idInput.select()
-      document.execCommand('copy')
-      emitter.emit('push-message', {
-        style: 'success',
-        title: `${id}\n已複製到剪貼簿`
-      })
     }
   },
   mounted () {

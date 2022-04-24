@@ -30,6 +30,9 @@ export default {
     changePages (page) {
       this.$emit('change-pages', page)
     }
+  },
+  mounted () {
+    document.body.scrollTop = document.documentElement.scrollTop = 0
   }
 }
 </script>

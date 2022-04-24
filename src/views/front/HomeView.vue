@@ -40,7 +40,9 @@
           >
             <i
               :class="
-                favoriteList.includes(product.id) ? 'bi-heart-fill' : 'bi-heart'
+                favoriteList.includes(product.id)
+                ? 'bi-heart-fill'
+                : 'bi-heart'
               "
             ></i>
           </button>
@@ -92,7 +94,7 @@
       </SwiperSlide>
     </swiper>
     <!-- 迷思、預約 -->
-    <div class="row row-cols-1 row-cols-md-2 mt-5">
+    <div class="row row-cols-1 row-cols-md-2 mt-5"  data-aos="fade-right" data-aos-offset="500">
       <div class="col">
         <img
           class="img-fluid"
@@ -160,7 +162,7 @@
         <br />
       </div>
 
-      <div class="col mb-5">
+      <div class="col mb-5" data-aos="fade-left">
         <img
           class="img-fluid"
           src="@/assets/img/index_img2.jpg"
@@ -169,6 +171,7 @@
       </div>
     </div>
   </div>
+  <SubscriptionComponent/>
 </template>
 
 <script>
@@ -178,14 +181,16 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
 import { Navigation, Pagination, Autoplay } from 'swiper'
 import { toThousandths } from '@/libs/methods'
+import SubscriptionComponent from '@/components/front/SubscriptionComponent.vue'
 export default {
-  components: { LoadingComponent, Swiper, SwiperSlide, HeaderBanner },
+  components: { LoadingComponent, Swiper, SwiperSlide, HeaderBanner, SubscriptionComponent },
   data () {
     return {
       products: [],
       isLoading: false,
       isLoadingItem: false,
-      modules: [Navigation, Pagination, Autoplay]
+      modules: [Navigation, Pagination, Autoplay],
+      favoriteList: []
     }
   },
   watch: {
@@ -235,7 +240,6 @@ export default {
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
-          console.dir(err)
           this.isLoadingItem = ''
           emitter.emit('push-message', {
             style: 'danger',

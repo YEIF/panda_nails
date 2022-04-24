@@ -33,8 +33,10 @@ export default {
           }
         })
         .catch((err) => {
-          console.dir(err)
-          emitter.emit('push-message', { style: 'danger', title: '登入失敗' })
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
           this.$router.push('/login')
         })
     }

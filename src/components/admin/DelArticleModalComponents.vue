@@ -34,11 +34,7 @@
           >
             取消
           </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="delArticle()"
-          >
+          <button type="button" class="btn btn-danger" @click="delArticle()">
             確認刪除
           </button>
         </div>
@@ -74,11 +70,17 @@ export default {
           this.isLoading = false
           this.$emit('get-articles')
           this.hideModal()
-          emitter.emit('push-message', { style: 'success', title: `已刪除${this.tempArticle.title}文章` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `已刪除${this.tempArticle.title}文章`
+          })
         })
         .catch((err) => {
           this.isLoading = false
-          console.dir(err)
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   }

@@ -299,7 +299,6 @@ export default {
             title: `${typeMessage}失敗`,
             content: `${err.response.data.message}`
           })
-          console.dir(err)
         })
     },
     createImagesUrl () {

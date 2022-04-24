@@ -56,7 +56,7 @@ export default {
       this.subscribeMail = ''
       emitter.emit('push-message', {
         style: 'success',
-        title: '訂閱成功！\n已發送一組折扣代碼至您的信箱\n可前往信箱查看唷～'
+        title: '訂閱成功！\n有最新消息會寄到信箱中\n可前往信箱查看唷～'
       })
     }
   }

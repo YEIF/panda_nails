@@ -4,7 +4,7 @@
   </VLoading>
   <HeaderBanner msg="常見問題" />
   <div class="container">
-    <div class="accordion mt-3" id="accordionFlushExample">
+    <div class="accordion mt-3 col-md-9 mx-auto" id="accordionFlushExample">
       <div
         class="accordion-item mb-5"
         data-aos="fade-up"
@@ -30,7 +30,7 @@
           :ref="`accordionCollapse${index}`"
         >
           <!-- data-bs-parent="#accordionFlushExample" -->
-          <div class="accordion-body">
+          <div class="accordion-body col-md-8 mx-auto text-start text-indent">
             {{ item.content }}
           </div>
         </div>
@@ -113,5 +113,8 @@ export default {
 <style lang="scss">
 .accordion-item:not(:first-of-type) {
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.text-indent{
+text-indent: 2em; /*em是相對單位,2em即現在一個字大小的兩倍*/
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <ToastMessageComponent></ToastMessageComponent>
+  <ToastMessageComponent />
   <router-view />
 </template>
 
@@ -13,11 +13,10 @@ export default {
 </script>
 
 <style lang="scss">
-// @import 'bootstrap/scss/bootstrap';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "assets/stylesheets/all.scss";
-// @import 'assets/css/loading.css'; 全域載入
+
 #app {
   font-family: 微軟正黑體,Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

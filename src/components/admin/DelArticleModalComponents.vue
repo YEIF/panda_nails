@@ -63,7 +63,7 @@ export default {
   methods: {
     delArticle () {
       this.isLoading = true
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/Article/${this.tempArticle.id}`
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${this.tempArticle.id}`
       this.$http
         .delete(url)
         .then((res) => {

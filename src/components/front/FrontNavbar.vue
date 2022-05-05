@@ -119,6 +119,7 @@ export default {
     emitter.on('get-favorite-num', () => {
       this.getFavorite()
     })
+    console.log(this)
   }
 }
 </script>
@@ -130,6 +131,7 @@ export default {
 .nav-logo {
   width: 255px;
   height: 60px;
+  // mask-image: url(@/assets/img/ax4ij-cf1db.svg);
   mask-image: url(@/assets/img/panda_850X200.png);
   background-color: black;
   background-size: contain;

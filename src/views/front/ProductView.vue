@@ -97,7 +97,7 @@
     </div>
     <div v-if="products.length > 0">
       <h2 class="my-5" data-aos="fade-up" data-aos-offset="100">為您推薦</h2>
-      <swiper
+      <Swiper
         :modules="modules"
         Navigation
         :pagination="{ clickable: false }"
@@ -179,7 +179,7 @@
             </div>
           </div>
         </SwiperSlide>
-      </swiper>
+      </Swiper>
     </div>
   </div>
 </template>
@@ -192,7 +192,9 @@ import BannerImage from '@/assets/img/banner3.jpg'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination, Autoplay } from 'swiper'
 import { toThousandths } from '@/libs/methods'
+import Favorite from '@/libs/mixins/Favorite'
 export default {
+  mixins: [Favorite],
   components: { LoadingComponent, Swiper, SwiperSlide, HeaderBanner },
   data () {
     return {

@@ -3,9 +3,9 @@
     <LoadingComponent />
   </VLoading>
   <HeaderBanner msg="美麗雙手，自信人生" />
-  <div class="container">
-    <h1 class="mt-5">所有款式</h1>
-    <swiper
+  <div class="container overflow-hidden">
+    <h2 class="mt-5">所有款式</h2>
+    <Swiper
       :modules="modules"
       Navigation
       :pagination="{ clickable: false }"
@@ -92,7 +92,7 @@
           </div>
         </div>
       </SwiperSlide>
-    </swiper>
+    </Swiper>
     <!-- 迷思、預約 -->
     <div class="row row-cols-1 row-cols-md-2 mt-5"  data-aos="fade-right" data-aos-offset="500">
       <div class="col">
@@ -182,8 +182,10 @@ import LoadingComponent from '@/components/LoadingComponent.vue'
 import { Navigation, Pagination, Autoplay } from 'swiper'
 import { toThousandths } from '@/libs/methods'
 import SubscriptionComponent from '@/components/front/SubscriptionComponent.vue'
+import Favorite from '@/libs/mixins/Favorite'
 export default {
   components: { LoadingComponent, Swiper, SwiperSlide, HeaderBanner, SubscriptionComponent },
+  mixins: [Favorite],
   data () {
     return {
       products: [],
@@ -246,26 +248,6 @@ export default {
             title: `${err.response.data.message}`
           })
         })
-    },
-    toggleFavorite (id, title) {
-      const favoriteId = this.favoriteList.findIndex((item) => item === id)
-      if (favoriteId === -1) {
-        this.favoriteList.push(id)
-        emitter.emit('push-message', {
-          style: 'success',
-          title: `${title}已 加入我的最愛`
-        })
-      } else {
-        this.favoriteList.splice(favoriteId, 1)
-        emitter.emit('push-message', {
-          style: 'danger',
-          title: `${title}已 取消我的最愛`
-        })
-      }
-    },
-    getFavorite () {
-      const favoriteList = localStorage.getItem('Favorite') || '[]'
-      this.favoriteList = JSON.parse(favoriteList)
     }
   },
   mounted () {

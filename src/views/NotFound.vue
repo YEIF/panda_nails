@@ -4,7 +4,7 @@
   <div>
     <img src="@/assets/img/panda_circle400.png" alt="404圖片" />
     <div>
-      <RouterLink to="/" type="button" class="btn btn-primary">點此返回首頁</RouterLink>
+      <RouterLink to="/" class="btn btn-primary">點此返回首頁</RouterLink>
     </div>
   </div>
 

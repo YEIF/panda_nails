@@ -204,7 +204,7 @@
           <div class="text-end">
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-primary mb-3"
               :disabled="
                 Object.keys(errors).length > 0 || carts.carts?.length === 0
               "

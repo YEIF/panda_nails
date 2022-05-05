@@ -17,7 +17,12 @@
       class="row list-unstyled row-cols-1 row-cols-md-3 row-cols-lg-4 mt-4"
       v-if="favoriteList?.length > 0"
     >
-      <li class="col" v-for="product in filterProducts" :key="product.id" data-aos="fade-up">
+      <li
+        class="col"
+        v-for="product in filterProducts"
+        :key="product.id"
+        data-aos="fade-up"
+      >
         <div class="card mb-4">
           <!-- <img :src="product.imageUrl" class="card-img-top card-img-scale" alt="..." /> -->
           <div class="overflow-hidden">
@@ -53,9 +58,7 @@
               <h3 class="card-title fs-4 fw-bold text-nowrap my-1">
                 {{ product.title }}
               </h3>
-              <span
-                class="badge rounded-pill bg-success fs-7"
-              >
+              <span class="badge rounded-pill bg-success fs-7">
                 {{ product.category }}
               </span>
             </div>
@@ -93,7 +96,6 @@
         >收藏商品
       </RouterLink>
     </div>
-
   </div>
 </template>
 
@@ -101,7 +103,9 @@
 import HeaderBanner from '@/components/front/HeaderBanner.vue'
 import emitter from '@/libs/emitter'
 import LoadingComponent from '@/components/LoadingComponent.vue'
+import Favorite from '@/libs/mixins/Favorite'
 export default {
+  mixins: [Favorite],
   data () {
     return {
       products: [],

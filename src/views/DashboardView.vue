@@ -1,6 +1,6 @@
 <template>
-  <DashNavbar></DashNavbar>
-  <router-view></router-view>
+  <DashNavbar />
+  <RouterView />
 </template>
 
 <script>

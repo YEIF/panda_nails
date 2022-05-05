@@ -3,7 +3,7 @@
     <LoadingComponent />
   </VLoading>
   <div class="container mt-5">
-    <StepStatusComponent :step-status="stepStatus"/>
+    <StepStatusComponent :step-status="stepStatus" />
 
     <!-- step2 -->
     <div
@@ -133,7 +133,7 @@
       class="row mt-5"
       v-if="stepStatus.success && Object.keys(order).length > 0"
     >
-      <div class="col-lg-4">
+      <!-- <div class="col-lg-4">
         <ul class="list-unstyled">
           <li class="border-bottom h4 text-start">
             <div>訂單內容 <span class="text-success">(已付款)</span></div>
@@ -215,59 +215,47 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div> -->
 
-      <div class="col-lg-8 justify-content-center text-start border">
-        <div class="text-start h2 border-bottom-0">訂購資訊</div>
-        <div class="mb-3">
-          <div for="訂單金額" class="mb-3">訂單金額</div>
-          <p class="h5 text-success">
-            {{ Math.round(order.total) }}
-          </p>
-        </div>
-        <div class="mb-3">
-          <div class="mb-3">訂單編號</div>
-          <p class="h5">
-            {{ order.id }}
-            <span class="ms-3" type="button" @click="copyOrderId(order.id)">
-              <i class="far fa-copy"></i>
-            </span>
-          </p>
-        </div>
-        <div class="mb-3">
-          <div class="mb-3">訂購時間</div>
-          <p class="h5">{{ DateFn(order.create_at) }}</p>
-        </div>
+      <div
+        class="col-lg-8 justify-content-center text-center border mb-5 mx-auto"
+      >
+        <div class="row">
+          <div class="col-md-9 col-xl-7 mx-auto">
+            <div class="card-body bg-white text-center py-6">
+              <!-- <i class="fad fa-check-circle text-success mb-3"></i> -->
+              <i class="bi bi-check-lg fa-4x text-success"></i>
+              <h3 class="h3 mb-4">付款成功</h3>
 
-        <template v-if="isCoupon.type">
-          <div class="mb-3">
-            <div class="mb-3">優惠卷代碼</div>
-            <p class="h5 text-success">{{ isCoupon.code }}</p>
+              <div class="h5 mb-3">感謝您的訂購～</div>
+              <div class=" d-flex justify-content-center  align-items-center mb-3">
+                請將此圖截下私訊IG小盒子
+                <a
+                  href="https://www.instagram.com/panda__57.nail/"
+                  target="_blank"
+                  class="text-white mx-3"
+                >
+                  <i class="bi bi-instagram fs-3 text-black"></i>
+                </a>
+              </div>
+              <div class="mb-4">可至訂單查詢詳細資料</div>
+              <div class="mb-3">
+                <p class="h5">
+                  訂單編號:{{ order.id }}
+                  <span
+                    class="ms-3"
+                    type="button"
+                    @click="copyOrderId(order.id)"
+                  >
+                    <i class="far fa-copy"></i>
+                  </span>
+                </p>
+              </div>
+              <a href="#/OrderTracking" class="btn btn-outline-primary"
+                >前往查詢</a
+              >
+            </div>
           </div>
-          <div class="mb-3">
-            <div class="mb-3">折扣百分比</div>
-            <p class="h5 text-success">{{ isCoupon.percent }}%</p>
-          </div>
-        </template>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人姓名</div>
-          <p class="h5">{{ order.user.name }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人電話</div>
-          <p class="h5">{{ order.user.tel }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">收件人地址</div>
-          <p class="h5">{{ order.user.address }}</p>
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-3">留言</div>
-          <p class="h5">{{ order.user.message }}</p>
         </div>
       </div>
     </div>

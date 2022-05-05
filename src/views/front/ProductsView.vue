@@ -72,7 +72,12 @@
 
       <div class="col-md-9">
         <ul class="row list-unstyled row-cols-1 row-cols-md-2 row-cols-lg-3">
-          <li class="col" v-for="product in products" :key="product.id"  data-aos="fade-up">
+          <li
+            class="col"
+            v-for="product in products"
+            :key="product.id"
+            data-aos="fade-up"
+          >
             <div class="card mb-4">
               <div class="overflow-hidden">
                 <button
@@ -119,12 +124,14 @@
                 <div
                   class="card-text d-flex justify-content-between align-items-center"
                 >
-                  <p class="fw-bold card-text text-danger fs-5 my-1">
-                    NT ${{ toThousandths(product.price) }} 元
+                  <div>
                     <del class="m-start fs-6 small text-muted">
                       {{ toThousandths(product.origin_price) }} 元</del
                     >
-                  </p>
+                    <p class="fw-bold card-text text-danger fs-5 my-1 d-block">
+                      NT ${{ toThousandths(product.price) }} 元
+                    </p>
+                  </div>
                   <button
                     type="button"
                     @click.prevent="addToCart(product.id, product.title)"
@@ -157,7 +164,9 @@ import emitter from '@/libs/emitter'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import LoadingComponent from '@/components/LoadingComponent.vue'
 import { toThousandths } from '@/libs/methods'
+import Favorite from '@/libs/mixins/Favorite'
 export default {
+  mixins: [Favorite],
   data () {
     return {
       products: [],
@@ -190,17 +199,11 @@ export default {
           this.products = res.data.products
           this.pagination = res.data.pagination
           this.isLoading = false
-          this.products.filter((item) => {
+          this.products.forEach((item) => {
             if (this.MenuCategory.indexOf(item.category) === -1) {
               this.MenuCategory.push(item.category)
             }
-            return this.MenuCategory
           })
-          //  從商品tag來的
-          if (this.$route.params.category) {
-            const { category } = this.$route.params
-            this.filterProducts(1, category)
-          }
         })
         .catch((err) => {
           this.isLoading = false
@@ -261,26 +264,6 @@ export default {
             title: `${err.response.data.message}`
           })
         })
-    },
-    toggleFavorite (id, title) {
-      const favoriteId = this.favoriteList.findIndex((item) => item === id)
-      if (favoriteId === -1) {
-        this.favoriteList.push(id)
-        emitter.emit('push-message', {
-          style: 'success',
-          title: `${title}已 加入我的最愛`
-        })
-      } else {
-        this.favoriteList.splice(favoriteId, 1)
-        emitter.emit('push-message', {
-          style: 'danger',
-          title: `${title}已 取消我的最愛`
-        })
-      }
-    },
-    getFavorite () {
-      const favoriteList = localStorage.getItem('Favorite') || '[]'
-      this.favoriteList = JSON.parse(favoriteList)
     }
   },
   watch: {
@@ -294,6 +277,11 @@ export default {
   },
   mounted () {
     this.getProducts()
+    //  從商品tag來的
+    if (this.$route.params.category) {
+      const { category } = this.$route.params
+      this.filterProducts(1, category)
+    }
     this.getFavorite()
   }
 }
@@ -310,7 +298,7 @@ export default {
 .start-85 {
   left: 85% !important;
 }
-.sticky-md-top{
- top:106px;
+.sticky-md-top {
+  top: 106px;
 }
 </style>

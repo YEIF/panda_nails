@@ -131,8 +131,8 @@ export default {
 .nav-logo {
   width: 255px;
   height: 60px;
-  // mask-image: url(@/assets/img/ax4ij-cf1db.svg);
-  mask-image: url(@/assets/img/panda_850X200.png);
+  mask-image: url(@/assets/img/ax4ij-cf1db.svg);
+  // mask-image: url(@/assets/img/panda_850X200.png);
   background-color: black;
   background-size: contain;
   mask-size: contain;

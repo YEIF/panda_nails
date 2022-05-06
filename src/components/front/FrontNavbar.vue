@@ -119,7 +119,6 @@ export default {
     emitter.on('get-favorite-num', () => {
       this.getFavorite()
     })
-    console.log(this)
   }
 }
 </script>
